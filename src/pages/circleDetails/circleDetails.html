@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title><div class="flex-space-between"><span>{{circle.toString()}}</span><span>{{(circle.finalAmount - 1) * 100 | number:'1.4-4'}}%</span></div></ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="refreshData()" *ngIf="!refreshing"><ion-icon name="refresh"></ion-icon></button>
+      <ion-spinner name="crescent" *ngIf="refreshing"></ion-spinner>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>Starting currency: {{circle.baseCur}}</ion-item>
+  <ion-item>Amount of trades: {{circle.trades.length}}</ion-item>
+  <ion-item>Value increasement: {{(circle.finalAmount - 1) * 100 | number:'1.4-4'}}%</ion-item>
+  <ion-item>
+    <ion-label>Change all risks at once with this slider ({{allRisk}}%) or <span class="fake-link" (click)="optimizeRisk()">optimize risk</span></ion-label>
+    <ion-range [(ngModel)]="allRisk" min="0" max="100" (ionChange)="applyAllRisk()">
+      <ion-icon range-left name="remove" (click)="allRisk = allRisk > 0 ? allRisk - 1 : allRisk"></ion-icon>
+      <ion-icon range-right name="add" (click)="allRisk = allRisk < 100 ? allRisk + 1 : allRisk"></ion-icon>
+    </ion-range>
+  </ion-item>
+  <ion-list>
+    <ion-list-header>Trade Steps</ion-list-header>
+    <div *ngFor="let trade of circle.trades; let i = index">
+      <ion-item no-lines>
+        <div class="flex-space-between">
+          <span *ngIf="trade.isBuy">{{i+1}}. Step buy {{trade.cur}} with {{i==0 ? circle.baseCur : circle.trades[i-1].cur}} at {{trade.tradePoint}}</span>
+          <span *ngIf="!trade.isBuy">{{i+1}}. Step sell {{i==0 ? circle.baseCur : circle.trades[i-1].cur}} to {{trade.cur}} at {{trade.tradePoint}}</span>
+          <span class="small-font fake-link" (click)="trade.showDetails = !trade.showDetails">{{trade.showDetails ? 'less' : 'more'}}</span>
+        </div>
+      </ion-item>
+      <ion-item *ngIf="trade.showDetails" no-lines>
+        <div class="flex-space-between">
+          <span>Bid: {{trade.ticker.bidPrice}}</span>
+          <span>{{trade.ticker.perc * 100 | number:'1.2-2'}}%</span>
+          <span>Ask: {{trade.ticker.askPrice}}</span>
+        </div>
+      </ion-item>
+      <ion-item *ngIf="trade.showDetails" no-lines>
+        <div class="flex-space-between">
+          <span>TradePoint: {{trade.tradePoint}}</span>
+          <span>Get {{trade.amount | number: '1.6'}} {{trade.cur}}</span>
+        </div>
+      </ion-item>
+      <ion-item *ngIf="trade.showDetails">
+        <ion-label>Risk: {{trade.tradePerc}}% (use slider to adjust)</ion-label>
+        <ion-range [(ngModel)]="trade.tradePerc" min="0" max="100" (ionChange)="circle.calc()">
+          <ion-icon range-left name="remove" (click)="trade.tradePerc = trade.tradePerc > 0 ? trade.tradePerc - 1 : trade.tradePerc"></ion-icon>
+          <ion-icon range-right name="add" (click)="trade.tradePerc = trade.tradePerc < 100 ? trade.tradePerc + 1 : trade.tradePerc"></ion-icon>
+        </ion-range>
+      </ion-item>
+    </div>
+  </ion-list>
+</ion-content>

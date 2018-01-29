@@ -1,17 +1,18 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>Binance Home</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+  <ion-item no-lines><span class="larger-font">Hi {{model.user.username}}!</span></ion-item>
+  <ion-item no-lines *ngIf="!model.binanceAccount"><span class="small-font">You haven't set up a binance account yet. <span class="fake-link" (click)="goBinanceAccount()">Do it now</span></span></ion-item>
+  <ion-item no-lines *ngIf="model.binanceAccount"><span class="small-font">Manage your binance keys <span class="fake-link" (click)="goBinanceAccount()">here</span>.</span></ion-item>
+  <div *ngIf="model.binanceAccount">
+    <ion-list>
+      <ion-item><span class="bold">Balances</span> <ion-spinner name="circles" *ngIf="balancesLoading"></ion-spinner></ion-item>
+      <ion-item *ngIf="balancesLoadingFailed">Failed to load balances</ion-item>
+      <ion-item *ngFor="let bal of balances">{{bal.asset}}: {{bal.free + bal.locked}}</ion-item>
+    </ion-list>
+  </div>
 </ion-content>

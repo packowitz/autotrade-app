@@ -1,0 +1,25 @@
+<div class="fullscreen flex-center">
+  <div class="flex-vert-center">
+    <div>{{register ? 'Register with': 'Login to'}} Autotrade</div>
+    <ion-item>
+      <ion-label floating>Username</ion-label>
+      <ion-input type="text" [(ngModel)]="username"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input type="password" [(ngModel)]="password"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="register">
+      <ion-label floating>Retype password</ion-label>
+      <ion-input type="password" [(ngModel)]="rePassword"></ion-input>
+    </ion-item>
+    <ion-item no-lines text-center *ngIf="!register">
+      <button ion-button (click)="doLogin()" [disabled]="!username || !password">Login</button>
+    </ion-item>
+    <ion-item no-lines text-center *ngIf="register">
+      <button ion-button (click)="doRegister()" [disabled]="!registerValid()">Register</button>
+    </ion-item>
+    <div *ngIf="!register">New to Autotrade? Please <span class="fake-link" (click)="register=true">register</span></div>
+    <div *ngIf="register">Already registered? Please <span class="fake-link" (click)="register=false">login</span></div>
+  </div>
+</div>

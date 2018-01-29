@@ -1,0 +1,37 @@
+.small-font {
+  font-size: 0.8em;
+}
+
+.larger-font {
+  font-size: 1.2em;
+}
+
+.bold {
+  font-weight: 500;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.fake-link {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #2291b2;
+}
+
+.fullscreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.loading-spin {
+  animation: loading-spin 1s linear infinite;
+}
+@keyframes loading-spin {
+  80% {transform: rotate(0deg);}
+  100% {transform: rotate(360deg);}
+}

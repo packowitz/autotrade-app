@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Binance Account</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <p>To be able to view your binace account, your open trades and set up auto trades you need to share your API key and your private key with Autotrade.</p>
+  <p>Go to binance and create an API key and give permission to read account and to trade. Autotrade has no withdraw function, don't give this permission.</p>
+  <p>For your own safety the keys are never send to this client unmasked.</p>
+  <p *ngIf="model.binanceAccount">ApiKey: {{model.binanceAccount.apiKey}}</p>
+  <p *ngIf="model.binanceAccount">PrivateKey: {{model.binanceAccount.privateKey}}</p>
+  <ion-item>
+    Post new keys
+  </ion-item>
+  <ion-item>
+    <ion-label floating>API key</ion-label>
+    <ion-input [(ngModel)]="apiKey"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label floating>Private key</ion-label>
+    <ion-input [(ngModel)]="privateKey"></ion-input>
+  </ion-item>
+  <ion-item text-center no-lines>
+    <button ion-button [disabled]="!apiKey || !privateKey" (click)="postKeys()">Send keys</button>
+  </ion-item>
+</ion-content>

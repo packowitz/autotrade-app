@@ -1,14 +1,44 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import {Model} from "../../providers/services/model.service";
+import {BinanceAccountPage} from "../accounts/binanceAccount";
+import {BinanceService} from "../../providers/services/binance.service";
+import {BinanceBalance} from "../../providers/domain/binanceBalance.model";
 
 @Component({
-  selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
+  balancesLoading: boolean = false;
+  balancesLoadingFailed: boolean = false;
+  balances: BinanceBalance[] = [];
 
+  constructor(public model: Model,
+              public nav: NavController,
+              public binance: BinanceService) {
+    this.loadBalances()
+  }
+
+  goBinanceAccount() {
+    this.nav.push(BinanceAccountPage);
+  }
+
+  loadBalances() {
+    if(!this.model.binanceAccount) {
+      return;
+    }
+    this.balancesLoading = true;
+    this.balancesLoadingFailed = false;
+    this.binance.getAccount().subscribe(
+      data => {
+        this.balances = data.balances;
+        this.balancesLoading = false;
+      }, error => {
+        this.balancesLoading = false;
+        this.balancesLoadingFailed = true;
+      }
+    );
   }
 
 }

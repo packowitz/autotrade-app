@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Depth {{symbol}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="refreshData()"><ion-icon name="refresh"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="depth">
+    {{depth.lastUpdateId}}
+  </div>
+</ion-content>
