@@ -28,12 +28,30 @@
   </script>-->
 
   <link href="build/main.css" rel="stylesheet">
+<style>
+  .page-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .page-content {
+    max-width: 960px;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+</style>
 
 </head>
 <body>
 
   <!-- Ionic's root component and where the app will load -->
-  <ion-app></ion-app>
+  <div class="page-wrapper">
+    <div class="page-content">
+      <ion-app></ion-app>
+    </div>
+  </div>
 
   <!-- The polyfills js is generated during the build process -->
   <script src="build/polyfills.js"></script>
