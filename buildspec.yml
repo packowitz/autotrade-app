@@ -1,0 +1,24 @@
+version: 0.1
+environment_variables:
+    plaintext:
+        S3_BUCKET: "trade.pacworx.io"
+phases:
+    install:
+        commands:
+            - echo Installing NPM dependencies
+            - npm install
+            - npm install md5-file
+    build:
+        commands:
+            - echo Build started on `date`
+            - npm run ionic:build --prod --aot --minifyJs -- minifyCss --optimizeJs
+            - node file-revision.js
+    post_build:
+         commands:
+            - aws s3 sync www/ s3://${S3_BUCKET} --delete
+            - echo Build completed on `date`
+artifacts:
+    files:
+        - '**/*'
+    base-directory: 'www*'
+    discard-paths: yes
