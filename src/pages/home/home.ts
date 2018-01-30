@@ -17,7 +17,10 @@ export class HomePage {
   constructor(public model: Model,
               public nav: NavController,
               public binance: BinanceService) {
-    this.loadBalances()
+  }
+
+  ionViewDidEnter() {
+    this.loadBalances();
   }
 
   goBinanceAccount() {
