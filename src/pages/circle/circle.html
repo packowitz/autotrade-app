@@ -10,29 +10,6 @@
 
 <ion-content padding>
   <div *ngIf="model.ticker">
-    <!--
-    <ion-item>
-      <ion-label>Choose your start currency</ion-label>
-      <ion-select #C (ionChange)="setCurrency(0, C.value)">
-        <ion-option *ngFor="let cur of model.baseCur">{{cur}}</ion-option>
-      </ion-select>
-    </ion-item>
-    <ion-item *ngFor="let prevCur of chain; let i = index">
-      <ion-label>exchange to</ion-label>
-      <ion-select #C (ionChange)="setCurrency(i + 1, C.value)" *ngIf="isBaseCurrency(prevCur)">
-        <ion-option *ngFor="let ticker of model.ticker | baseCurrency:prevCur:true">{{ticker.symbol.replace(prevCur, '')}}</ion-option>
-      </ion-select>
-      <ion-select #C (ionChange)="setCurrency(i + 1, C.value)" *ngIf="!isBaseCurrency(prevCur)">
-        <ion-option *ngFor="let ticker of model.ticker | buyCurrency:prevCur">{{ticker.symbol.replace(prevCur, '')}}</ion-option>
-      </ion-select>
-    </ion-item>
-    <ion-item *ngIf="isCircle()">
-      <button ion-button (click)="calc()">Calculate</button>
-    </ion-item>
-    <div *ngIf="result">
-
-    </div>
--->
     <div>
       <ion-list>
         <ion-list-header>Search for good circles</ion-list-header>
@@ -43,11 +20,11 @@
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-label>Max circle trades</ion-label>
+          <ion-label>Max circle trades (3-6)</ion-label>
           <ion-input type="number" [(ngModel)]="maxSteps" min="3" max="6" step="1" [disabled]="searchInProgress"></ion-input>
         </ion-item>
-        <ion-item *ngIf="baseCur">
-          <button ion-button (click)="searchCircles()" *ngIf="!searchInProgress">Search circles</button>
+        <ion-item text-center>
+          <button ion-button (click)="searchCircles()" *ngIf="!searchInProgress" [disabled]="searchInProgress || !baseCur || maxSteps < 3 || maxSteps > 6">Search circles</button>
           <ion-spinner *ngIf="searchInProgress" name="bubbles"></ion-spinner>
         </ion-item>
         <ion-item *ngFor="let searchResult of searchResults">

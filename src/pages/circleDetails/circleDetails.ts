@@ -35,18 +35,8 @@ export class CircleDetailsPage {
 
   optimizeRisk() {
     this.circle.trades.forEach(t => {
-      if(t.ticker.perc < 0.002) {
-        t.tradePerc = 0;
-      } else if(t.ticker.perc < 0.003) {
-        t.tradePerc = 20;
-      } else if(t.ticker.perc < 0.006) {
-        t.tradePerc = 50;
-      } else if(t.ticker.perc < 0.01) {
-        t.tradePerc = 65;
-      } else {
-        t.tradePerc = 80;
-      }
-      this.circle.calc();
+      t.optimizeTradePerc();
     });
+    this.circle.calc();
   }
 }

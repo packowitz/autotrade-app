@@ -5,80 +5,6 @@ import {BinanceService} from "../../providers/services/binance.service";
 import {Ticker} from "../../providers/domain/ticker";
 import {CircleDetailsPage} from "../circleDetails/circleDetails";
 
-export class CircleStep {
-  cur: string;
-  amount: number;
-  isBuy: boolean;
-  tradePoint: number;
-  tick: Ticker;
-
-  constructor(cur: string, amount: number, isBuy?: boolean, tradePoint?: number, tick?: Ticker) {
-    this.cur = cur;
-    this.amount = amount;
-    this.isBuy = isBuy;
-    this.tradePoint = tradePoint;
-    this.tick = tick;
-  }
-}
-
-export class CircleResult {
-  happyPath: CircleStep[];
-  middlePath: CircleStep[];
-  quickPath: CircleStep[];
-
-  private currentCur: string;
-
-  constructor(startCur: string, public ticker: Ticker[]) {
-    this.currentCur = startCur;
-    this.happyPath = [new CircleStep(startCur, 1)];
-    this.middlePath = [new CircleStep(startCur, 1)];
-    this.quickPath = [new CircleStep(startCur, 1)];
-  }
-
-  addStep(cur: string) {
-    let isBuy: boolean = true;
-    let symbol = cur + this.currentCur;
-    let tick = this.ticker.find(t => t.symbol === symbol);
-    if(!tick) {
-      isBuy = false;
-      symbol = this.currentCur + cur;
-      tick = this.ticker.find(t => t.symbol === symbol);
-    }
-    let last, newAmount, tradePoint: number;
-
-    last = this.happyPath[this.happyPath.length - 1];
-    if(isBuy) {
-      tradePoint = parseFloat(tick.bidPrice)
-      newAmount = last.amount / tradePoint;
-    } else {
-      tradePoint = parseFloat(tick.askPrice)
-      newAmount = last.amount * tradePoint;
-    }
-    this.happyPath.push(new CircleStep(cur, newAmount, isBuy, tradePoint, tick));
-
-    last = this.middlePath[this.middlePath.length - 1];
-    tradePoint = (parseFloat(tick.bidPrice) + parseFloat(tick.askPrice)) / 2;
-    if(isBuy) {
-      newAmount = last.amount / tradePoint;
-    } else {
-      newAmount = last.amount * tradePoint;
-    }
-    this.middlePath.push(new CircleStep(cur, newAmount, isBuy, tradePoint, tick));
-
-    last = this.quickPath[this.quickPath.length - 1];
-    if(isBuy) {
-      tradePoint = parseFloat(tick.askPrice);
-      newAmount = last.amount / tradePoint;
-    } else {
-      tradePoint = parseFloat(tick.bidPrice);
-      newAmount = last.amount * tradePoint;
-    }
-    this.quickPath.push(new CircleStep(cur, newAmount, isBuy, tradePoint, tick));
-
-    this.currentCur = cur;
-  }
-}
-
 export class CircleTrade {
   isBuy: boolean;
   ticker: Ticker;
@@ -91,6 +17,21 @@ export class CircleTrade {
   constructor(isBuy: boolean, ticker: Ticker) {
     this.isBuy = isBuy;
     this.ticker = ticker;
+    this.optimizeTradePerc();
+  }
+
+  optimizeTradePerc() {
+    if(this.ticker.perc < 0.002) {
+      this.tradePerc = 0;
+    } else if(this.ticker.perc < 0.003) {
+      this.tradePerc = 20;
+    } else if(this.ticker.perc < 0.006) {
+      this.tradePerc = 50;
+    } else if(this.ticker.perc < 0.01) {
+      this.tradePerc = 65;
+    } else {
+      this.tradePerc = 80;
+    }
   }
 
   calc(inCur: string, inAmount) {
@@ -189,9 +130,6 @@ export class CirclePage {
   lastSearchTickerTimestamp: number;
   refreshing: boolean = false;
 
-  chain: string[] = [];
-  result: CircleResult;
-
   constructor(public navCtrl: NavController, public model: Model, public binance: BinanceService) {
     if(!this.model.ticker || this.model.tickerUpdated < (new Date().getTime() - 20000)) {
       this.refreshData();
@@ -217,30 +155,8 @@ export class CirclePage {
     }, error => {console.log("got error")});
   }
 
-  setCurrency(pos: number, value: string) {
-    this.result = null;
-    if(this.chain.length > pos) {
-      this.chain = this.chain.slice(0, pos);
-    }
-    this.chain[pos] = value;
-  }
-
   isBaseCurrency(cur: string) {
     return this.model.baseCur.indexOf(cur) != -1;
-  }
-
-  isCircle(): boolean {
-    return this.chain.length > 2 && this.chain[0] == this.chain[this.chain.length - 1];
-  }
-
-  calc() {
-    this.result = new CircleResult(this.chain[0], this.model.ticker);
-    this.chain.forEach((c,i) => {
-      if(i > 0) {
-        this.result.addStep(c);
-      }
-    });
-    console.log(this.result);
   }
 
   gotoCircleDetails(circle: Circle) {
@@ -248,6 +164,9 @@ export class CirclePage {
   }
 
   searchCircles() {
+    if(this.maxSteps < 3 || this.maxSteps > 6) {
+      return;
+    }
     this.searchInProgress = true;
     this.searchResults = [];
     this.lastSearchTickerTimestamp = this.model.tickerUpdated;

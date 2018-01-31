@@ -1,0 +1,10 @@
+.app-root {
+  .ion-page {
+    display: flex;
+    justify-content: center;
+    ion-tabs {
+      position: relative;
+      max-width: 960px;
+    }
+  }
+}
