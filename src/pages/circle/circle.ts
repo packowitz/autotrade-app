@@ -17,7 +17,42 @@ export class CircleTrade {
   constructor(isBuy: boolean, ticker: Ticker) {
     this.isBuy = isBuy;
     this.ticker = ticker;
-    this.optimizeTradePerc();
+  }
+
+  calcTradePerc(riskLevel: string) {
+    if(riskLevel == 'low') {
+      this.lowRiskTradePerc();
+    } else if(riskLevel == 'high') {
+      this.highRiskTradePerc();
+    } else {
+      this.optimizeTradePerc();
+    }
+  }
+
+  lowRiskTradePerc() {
+    if(this.ticker.perc < 0.003) {
+      this.tradePerc = 0;
+    } else if(this.ticker.perc < 0.005) {
+      this.tradePerc = 20;
+    } else if(this.ticker.perc < 0.01) {
+      this.tradePerc = 40;
+    } else {
+      this.tradePerc = 60;
+    }
+  }
+
+  highRiskTradePerc() {
+    if(this.ticker.perc < 0.001) {
+      this.tradePerc = 10;
+    } else if(this.ticker.perc < 0.002) {
+      this.tradePerc = 50;
+    } else if(this.ticker.perc < 0.005) {
+      this.tradePerc = 65;
+    } else if(this.ticker.perc < 0.007) {
+      this.tradePerc = 80;
+    } else {
+      this.tradePerc = 90;
+    }
   }
 
   optimizeTradePerc() {
@@ -34,7 +69,8 @@ export class CircleTrade {
     }
   }
 
-  calc(inCur: string, inAmount) {
+  calc(inCur: string, inAmount, riskLevel: string) {
+    this.calcTradePerc(riskLevel);
     this.cur = this.ticker.symbol.replace(inCur, "");
     let ask: number = parseFloat(this.ticker.askPrice);
     let bid: number = parseFloat(this.ticker.bidPrice);
@@ -60,12 +96,14 @@ export class Circle {
   baseCur: string;
   lastCur: string;
   trades: CircleTrade[] = [];
+  riskLevel: string;
 
   finalAmount: number;
 
-  constructor(baseCur: string) {
+  constructor(baseCur: string, riskLevel: string) {
     this.baseCur = baseCur;
     this.lastCur = baseCur;
+    this.riskLevel = riskLevel;
   }
 
   addTrade(trade: CircleTrade) {
@@ -81,7 +119,7 @@ export class Circle {
     let tradeCur: string = this.baseCur;
     let tradeAmount: number = 1;
     this.trades.forEach(t => {
-      t.calc(tradeCur, tradeAmount);
+      t.calc(tradeCur, tradeAmount, this.riskLevel);
       tradeCur = t.cur;
       tradeAmount = t.amount;
     });
@@ -111,7 +149,7 @@ export class Circle {
   }
 
   public static clone(orig: Circle): Circle {
-    let clone: Circle = new Circle(orig.baseCur);
+    let clone: Circle = new Circle(orig.baseCur, orig.riskLevel);
     clone.lastCur = orig.lastCur;
     clone.trades = orig.trades.slice(0);
     return clone;
@@ -129,8 +167,12 @@ export class CirclePage {
   searchResults: Circle[] = [];
   lastSearchTickerTimestamp: number;
   refreshing: boolean = false;
+  riskLevel: string = "optimal";
 
   constructor(public navCtrl: NavController, public model: Model, public binance: BinanceService) {
+    if(!this.baseCur) {
+      this.baseCur = this.model.baseCur[0];
+    }
     if(!this.model.ticker || this.model.tickerUpdated < (new Date().getTime() - 20000)) {
       this.refreshData();
     }
@@ -155,6 +197,13 @@ export class CirclePage {
     }, error => {console.log("got error")});
   }
 
+  setRisk(risk: string) {
+    this.riskLevel = risk;
+    if(this.searchResults.length > 0) {
+      this.searchCircles();
+    }
+  }
+
   isBaseCurrency(cur: string) {
     return this.model.baseCur.indexOf(cur) != -1;
   }
@@ -170,7 +219,7 @@ export class CirclePage {
     this.searchInProgress = true;
     this.searchResults = [];
     this.lastSearchTickerTimestamp = this.model.tickerUpdated;
-    let circle: Circle = new Circle(this.baseCur);
+    let circle: Circle = new Circle(this.baseCur, this.riskLevel);
     let buys: Ticker[] = this.findBuys(circle.lastCur);
     buys.forEach(buy => {
       this.addCircleStep(circle, new CircleTrade(true, buy));

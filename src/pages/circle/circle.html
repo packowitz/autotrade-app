@@ -12,7 +12,7 @@
   <div *ngIf="model.ticker">
     <div>
       <ion-list>
-        <ion-list-header>Search for good circles</ion-list-header>
+        <ion-list-header no-lines>Search for good circles</ion-list-header>
         <ion-item>
           <ion-label>Choose your start currency</ion-label>
           <ion-select [(ngModel)]="baseCur" [disabled]="searchInProgress">
@@ -22,6 +22,13 @@
         <ion-item>
           <ion-label>Max circle trades (3-6)</ion-label>
           <ion-input type="number" [(ngModel)]="maxSteps" min="3" max="6" step="1" [disabled]="searchInProgress"></ion-input>
+        </ion-item>
+        <ion-item>
+          <div class="flex-space-between">
+            <button ion-button [outline]="riskLevel == 'low' ? null : ''" (click)="setRisk('low')">Low risk</button>
+            <button ion-button [outline]="riskLevel == 'optimal' ? null : ''" (click)="setRisk('optimal')">Optimal risk</button>
+            <button ion-button [outline]="riskLevel == 'high' ? null : ''" (click)="setRisk('high')">High risk</button>
+          </div>
         </ion-item>
         <ion-item text-center>
           <button ion-button (click)="searchCircles()" *ngIf="!searchInProgress" [disabled]="searchInProgress || !baseCur || maxSteps < 3 || maxSteps > 6">Search circles</button>

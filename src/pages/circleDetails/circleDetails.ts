@@ -10,15 +10,21 @@ import {BinanceService} from "../../providers/services/binance.service";
 export class CircleDetailsPage {
 
   circle: Circle;
-  allRisk: number = 50;
   refreshing: boolean = false;
 
   constructor(public navParams: NavParams, public model: Model, public binance: BinanceService) {
     this.circle = navParams.get("circle");
   }
 
-  applyAllRisk() {
-    this.circle.trades.forEach(c => {c.tradePerc = this.allRisk});
+  optimizeRisk() {
+    this.circle.trades.forEach(t => {
+      t.optimizeTradePerc();
+    });
+    this.circle.calc();
+  }
+
+  setRisk(risk: string) {
+    this.circle.riskLevel = risk;
     this.circle.calc();
   }
 
@@ -31,12 +37,5 @@ export class CircleDetailsPage {
       this.circle.updateTicker(data);
       this.refreshing = false;
     }, error => {console.log("got error")});
-  }
-
-  optimizeRisk() {
-    this.circle.trades.forEach(t => {
-      t.optimizeTradePerc();
-    });
-    this.circle.calc();
   }
 }
