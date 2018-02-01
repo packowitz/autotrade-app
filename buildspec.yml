@@ -15,8 +15,7 @@ phases:
             - node file-revision.js
     post_build:
          commands:
-            - aws s3 rm s3://${S3_BUCKET} --recursive
-            - aws s3 cp www/ s3://${S3_BUCKET} --recursive
+            - aws s3 sync www/ s3://${S3_BUCKET} --delete
             - echo Build completed on `date`
 artifacts:
     files:
