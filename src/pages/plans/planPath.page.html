@@ -14,50 +14,48 @@
     <ion-item>
       <div class="flex-space-between">
         <span class="bold">Circles</span>
+        <span class="flex-grow"></span>
+        <span class="pointer margin-right-m" (click)="showCancelledSteps = !showCancelledSteps">
+          <ion-icon name="checkbox-outline" *ngIf="showCancelledSteps"></ion-icon>
+          <ion-icon name="square-outline" *ngIf="!showCancelledSteps"></ion-icon>
+          Show Cancelled Steps
+        </span>
         <ion-spinner name="circles" *ngIf="pathsLoading"></ion-spinner>
         <ion-icon name="refresh" class="pointer" *ngIf="!pathsLoading" (click)="loadPaths()"></ion-icon>
       </div>
     </ion-item>
     <ion-item *ngIf="pathsLoadingFailed">Failed to load plans</ion-item>
     <div *ngFor="let path of paths">
-      <div *ngIf="path.status == 'ACTIVE'">
-        <ion-item>
-          <div class="flex-space-between">
-            <span>Active since {{path.startDate | date:'HH:mm:ss'}}</span>
-            <span>{{path.startAmount}} {{path.startCurrency}} in {{path.maxSteps}} steps to {{path.destCurrency}}</span>
+      <ion-item (click)="path.showSteps = !path.showSteps">
+        <div class="flex-space-between" *ngIf="path.status != 'FINISHED'">
+          <span *ngIf="path.status == 'ACTIVE'">Active since {{path.startDate | date:'HH:mm:ss'}}</span>
+          <span *ngIf="path.status == 'CANCELLED'">Cancelled at {{path.finishDate | date:'HH:mm:ss'}}</span>
+          <span>{{path.startAmount}} {{path.startCurrency}} in max {{path.maxSteps}} steps to {{path.destCurrency}}</span>
+        </div>
+        <div class="flex-space-between" *ngIf="path.status == 'FINISHED'">
+          <span>Finished [{{path.startDate | date:'HH:mm:ss'}} - {{path.finishDate | date:'HH:mm:ss'}}]</span>
+          <span>{{path.startAmount | number:'1.0-8'}} {{path.startCurrency}} -> {{path.destAmount | number:'1.0-8'}} {{path.destCurrency}}</span>
+        </div>
+        <div *ngIf="path.status == 'ACTIVE' || path.showSteps">
+          <div *ngFor="let step of path.steps">
+            <ion-item no-lines *ngIf="showCancelledSteps || step.status != 'CANCELLED'">
+              <div class="flex-space-between">
+              <span>
+                {{step.step}}. step
+                <span *ngIf="step.status == 'ACTIVE'"> [{{step.startDate | date:'HH:mm:ss'}}]</span>
+                <span *ngIf="step.status == 'DONE'"> [{{step.finishDate | date:'HH:mm:ss'}}]</span>
+              </span>
+                <span *ngIf="step.status != 'DONE'">
+                <span *ngIf="step.side == 'SELL'">sell {{step.inAmount | number:'1.0-8'}} {{step.inCurrency}} to {{step.symbol.replace(step.inCurrency, '')}} at {{step.price | number: '1.0-8'}}</span>
+                <span *ngIf="step.side == 'BUY'">buy {{step.symbol.replace(step.inCurrency, '')}} for {{step.inAmount | number:'1.0-8'}} {{step.inCurrency}} at {{step.price | number: '1.0-8'}}</span>
+              </span>
+                <span *ngIf="step.status == 'DONE'">{{step.inAmount | number:'1.0-8'}} {{step.inCurrency}} -> {{step.outAmount | number:'1.0-8'}} {{step.outCurrency}} at {{step.price | number: '1.0-8'}}</span>
+                <span>{{step.status}}</span>
+              </div>
+            </ion-item>
           </div>
-          <ion-item *ngFor="let step of path.steps" no-lines>
-            <div class="flex-space-between" *ngIf="step.status != 'DONE'">
-              <span>{{step.step}}. step started {{step.startDate | date:'HH:mm:ss'}}</span>
-              <span *ngIf="step.side == 'BUY'">buy {{step.symbol.replace(step.inCurrency, '')}} for {{step.inAmount | number:'1.0-8'}} {{step.inCurrency}} at {{step.price | number: '1.0-8'}}</span>
-              <span *ngIf="step.side == 'SELL'">sell {{step.inAmount | number:'1.0-8'}} {{step.inCurrency}} to {{step.symbol.replace(step.inCurrency, '')}} at {{step.price | number: '1.0-8'}}</span>
-              <span>{{step.status}}</span>
-            </div>
-            <div class="flex-space-between" *ngIf="step.status == 'DONE'">
-              <span>{{step.step}}. step took {{step.finishDate - step.startDate}} ms</span>
-              <span>converted {{step.inAmount | number:'1.0-8'}} {{step.inCurrency}} to {{step.outAmount | number:'1.0-8'}} {{step.outCurrency}} at {{step.price | number: '1.0-8'}}</span>
-              <span>{{step.status}}</span>
-            </div>
-          </ion-item>
-        </ion-item>
-      </div>
-
-      <div *ngIf="path.status != 'ACTIVE'">
-        <ion-item>
-          <div class="flex-space-between">
-            <span>{{path.startDate | date:'HH:mm:ss'}}<span *ngIf="path.finishDate"> - {{path.finishDate | date:'HH:mm:ss'}}</span></span>
-            <span>{{path.startAmount}} {{path.startCurrency}}<span *ngIf="path.destAmount"> -> {{path.destAmount}} {{path.destCurrency}}</span></span>
-            <span>{{path.status}}</span>
-          </div>
-        </ion-item>
-        <ion-item *ngFor="let step of path.steps">
-          <div class="flex-space-between">
-            <span>{{step.side}} {{step.symbol}} at {{step.price}}</span>
-            <span *ngIf="step.inAmount">{{step.inAmount}} {{step.inCurrency}}<span *ngIf="step.outAmount"> -> {{step.outAmount}} {{step.outCurrency}}</span></span>
-            <span>{{step.status}}</span>
-          </div>
-        </ion-item>
-      </div>
+        </div>
+      </ion-item>
     </div>
   </ion-list>
 </ion-content>

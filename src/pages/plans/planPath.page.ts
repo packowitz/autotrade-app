@@ -16,6 +16,8 @@ export class PlanPathPage {
   plan: Plan;
   paths: PathPlan[] = [];
 
+  showCancelledSteps: boolean = false;
+
   constructor(public model: Model,
               public nav: NavController,
               public binance: BinanceService,

@@ -11,4 +11,7 @@ export class PathPlan {
   startDate: string;
   finishDate: string;
   steps: PlanStep[];
+
+  //ui controls
+  showSteps?: boolean;
 }
