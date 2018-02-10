@@ -10,9 +10,15 @@
   <ion-item no-lines *ngIf="model.binanceAccount"><span class="small-font">Manage your binance keys <span class="fake-link" (click)="goBinanceAccount()">here</span>.</span></ion-item>
   <div *ngIf="model.binanceAccount">
     <ion-list>
-      <ion-item><span class="bold">Balances</span> <ion-spinner name="circles" *ngIf="balancesLoading"></ion-spinner></ion-item>
+      <ion-item>
+        <div class="flex-space-between">
+          <span class="bold">Balances</span>
+          <ion-spinner name="circles" *ngIf="balancesLoading"></ion-spinner>
+          <ion-icon name="refresh" class="pointer" *ngIf="!balancesLoading" (click)="loadBalances()"></ion-icon>
+        </div>
+      </ion-item>
       <ion-item *ngIf="balancesLoadingFailed">Failed to load balances</ion-item>
-      <ion-item *ngFor="let bal of balances">{{bal.asset}}: {{bal.free + bal.locked}}</ion-item>
+      <ion-item *ngFor="let bal of model.binanceBalances">{{bal.asset}}: {{bal.free + bal.locked}}</ion-item>
     </ion-list>
   </div>
 </ion-content>

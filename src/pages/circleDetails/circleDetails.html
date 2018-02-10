@@ -44,4 +44,7 @@
       </ion-item>
     </div>
   </ion-list>
+  <ion-item text-center no-lines *ngIf="model.binanceAccount">
+    <button ion-button (click)="startCircle()">Run this circle</button>
+  </ion-item>
 </ion-content>

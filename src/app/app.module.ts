@@ -27,6 +27,10 @@ import {LoginPage} from "../pages/login/login";
 import {UserService} from "../providers/services/user.service";
 import {JwtTokenInterceptor} from "../providers/interceptors/jwt_token.interceptor";
 import {BinanceAccountPage} from "../pages/accounts/binanceAccount";
+import {PlansPage} from "../pages/plans/plans.page";
+import {PlanCirclePage} from "../pages/plans/planCircle.page";
+import {CreateLoopPopover} from "../pages/plans/createLoop.popover";
+import {PlanPathPage} from "../pages/plans/planPath.page";
 
 @NgModule({
   declarations: [
@@ -34,10 +38,14 @@ import {BinanceAccountPage} from "../pages/accounts/binanceAccount";
     BinanceAccountPage,
     CirclePage,
     CircleDetailsPage,
+    CreateLoopPopover,
     DepthPage,
     HomePage,
     LoadingPage,
     LoginPage,
+    PlanCirclePage,
+    PlanPathPage,
+    PlansPage,
     TabsPage,
     TickerPage,
 
@@ -59,10 +67,14 @@ import {BinanceAccountPage} from "../pages/accounts/binanceAccount";
     BinanceAccountPage,
     CirclePage,
     CircleDetailsPage,
+    CreateLoopPopover,
     DepthPage,
     HomePage,
     LoadingPage,
     LoginPage,
+    PlanCirclePage,
+    PlanPathPage,
+    PlansPage,
     TabsPage,
     TickerPage
   ],

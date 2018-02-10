@@ -12,7 +12,6 @@ export class HomePage {
 
   balancesLoading: boolean = false;
   balancesLoadingFailed: boolean = false;
-  balances: BinanceBalance[] = [];
 
   constructor(public model: Model,
               public nav: NavController,
@@ -35,7 +34,7 @@ export class HomePage {
     this.balancesLoadingFailed = false;
     this.binance.getAccount().subscribe(
       data => {
-        this.balances = data.balances;
+        this.model.binanceBalances = data.balances;
         this.balancesLoading = false;
       }, error => {
         this.balancesLoading = false;

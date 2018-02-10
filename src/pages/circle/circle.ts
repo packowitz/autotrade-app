@@ -33,11 +33,11 @@ export class CircleTrade {
     if(this.ticker.perc < 0.003) {
       this.tradePerc = 0;
     } else if(this.ticker.perc < 0.005) {
-      this.tradePerc = 20;
+      this.tradePerc = 10;
     } else if(this.ticker.perc < 0.01) {
-      this.tradePerc = 40;
+      this.tradePerc = 20;
     } else {
-      this.tradePerc = 60;
+      this.tradePerc = 30;
     }
   }
 
@@ -45,13 +45,13 @@ export class CircleTrade {
     if(this.ticker.perc < 0.001) {
       this.tradePerc = 10;
     } else if(this.ticker.perc < 0.002) {
-      this.tradePerc = 50;
+      this.tradePerc = 30;
     } else if(this.ticker.perc < 0.005) {
-      this.tradePerc = 65;
+      this.tradePerc = 50;
     } else if(this.ticker.perc < 0.007) {
-      this.tradePerc = 80;
+      this.tradePerc = 65;
     } else {
-      this.tradePerc = 90;
+      this.tradePerc = 80;
     }
   }
 
@@ -59,13 +59,13 @@ export class CircleTrade {
     if(this.ticker.perc < 0.002) {
       this.tradePerc = 0;
     } else if(this.ticker.perc < 0.003) {
-      this.tradePerc = 20;
+      this.tradePerc = 15;
     } else if(this.ticker.perc < 0.006) {
-      this.tradePerc = 50;
+      this.tradePerc = 30;
     } else if(this.ticker.perc < 0.01) {
-      this.tradePerc = 65;
+      this.tradePerc = 50;
     } else {
-      this.tradePerc = 80;
+      this.tradePerc = 60;
     }
   }
 
