@@ -31,6 +31,7 @@ import {PlansPage} from "../pages/plans/plans.page";
 import {PlanCirclePage} from "../pages/plans/planCircle.page";
 import {CreateLoopPopover} from "../pages/plans/createLoop.popover";
 import {PlanPathPage} from "../pages/plans/planPath.page";
+import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import {PlanPathPage} from "../pages/plans/planPath.page";
     BuyCurrencyFilter,
     BnbFilter,
     BtcFilter,
+    DoneStepFiter,
     SortPipe
   ],
   imports: [

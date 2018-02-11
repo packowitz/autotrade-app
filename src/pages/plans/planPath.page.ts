@@ -4,6 +4,7 @@ import {Model} from "../../providers/services/model.service";
 import {BinanceService} from "../../providers/services/binance.service";
 import {Plan} from "../../providers/domain/plan.model";
 import {PathPlan} from "../../providers/domain/pathPlan.model";
+import {PlanStep} from "../../providers/domain/planStep.model";
 
 @Component({
   templateUrl: 'planPath.page.html'
@@ -25,6 +26,20 @@ export class PlanPathPage {
               public toastCtrl: ToastController) {
     this.plan = this.navParams.get("plan");
     this.loadPaths();
+  }
+
+  getDoneStep(path: PathPlan, idx: number): PlanStep {
+    let counter: number = 0;
+    return path.steps.find(step => {
+      if(step.status == 'DONE') {
+        if(counter == idx) {
+          return true;
+        } else {
+          counter ++;
+        }
+      }
+      return false;
+    });
   }
 
   loadPaths() {

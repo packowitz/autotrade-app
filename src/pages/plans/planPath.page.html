@@ -13,7 +13,7 @@
   <ion-list>
     <ion-item>
       <div class="flex-space-between">
-        <span class="bold">Circles</span>
+        <span class="bold">Runs</span>
         <span class="flex-grow"></span>
         <span class="pointer margin-right-m" (click)="showCancelledSteps = !showCancelledSteps">
           <ion-icon name="checkbox-outline" *ngIf="showCancelledSteps"></ion-icon>
@@ -32,9 +32,22 @@
           <span *ngIf="path.status == 'CANCELLED'">Cancelled at {{path.finishDate | date:'HH:mm:ss'}}</span>
           <span>{{path.startAmount}} {{path.startCurrency}} in max {{path.maxSteps}} steps to {{path.destCurrency}}</span>
         </div>
-        <div class="flex-space-between" *ngIf="path.status == 'FINISHED'">
-          <span>Finished [{{path.startDate | date:'HH:mm:ss'}} - {{path.finishDate | date:'HH:mm:ss'}}]</span>
-          <span>{{path.startAmount | number:'1.0-8'}} {{path.startCurrency}} -> {{path.destAmount | number:'1.0-8'}} {{path.destCurrency}}</span>
+        <div *ngIf="path.status == 'FINISHED'">
+          <div class="flex-vert">
+            <div class="flex-space-between">
+              <span>Finished [{{path.startDate | date:'HH:mm:ss'}} - {{path.finishDate | date:'HH:mm:ss'}}]</span>
+              <span>{{path.destAmount | number:'1.0-8'}} {{path.destCurrency}}</span>
+            </div>
+            <div class="flex-start" *ngIf="path.startCurrency == path.destCurrency">
+              <span *ngIf="path.destAmount >= path.startAmount" class="color-success">+{{(100 * path.destAmount / path.startAmount) - 100 | number:'1.0-2'}}% {{path.destCurrency}}</span>
+              <span *ngIf="path.destAmount < path.startAmount" class="color-failure">{{(100 * path.destAmount / path.startAmount) - 100 | number:'1.0-2'}}% {{path.destCurrency}}</span>
+              <span *ngFor="let step of path.steps | filterDoneSteps; let i = index">
+                <span *ngIf="i > 0 && (getDoneStep(path, i-1).outAmount - step.inAmount) > 0" class="color-success margin-left-m">
+                  +{{getDoneStep(path, i-1).outAmount - step.inAmount | number:'1.0-8'}} {{step.inCurrency}}
+                </span>
+              </span>
+            </div>
+          </div>
         </div>
         <div *ngIf="path.status == 'ACTIVE' || path.showSteps">
           <div *ngFor="let step of path.steps">
