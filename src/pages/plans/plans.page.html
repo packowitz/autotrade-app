@@ -18,9 +18,12 @@
       </ion-item>
       <ion-item *ngIf="plansLoadingFailed">Failed to load plans</ion-item>
       <ion-item *ngFor="let plan of model.binancePlans">
-        <div class="flex-space-between pointer" (click)="goPlanDetails(plan)">
-          <span>#{{plan.id}} {{plan.type}}: {{plan.description}}</span>
-          <span>{{plan.status}}</span>
+        <div class="flex-vert pointer">
+          <div class="flex-space-between pointer" (click)="goPlanDetails(plan)">
+            <span>#{{plan.id}} {{plan.type}}</span>
+            <span>{{plan.status}}</span>
+          </div>
+          <div>{{plan.description}}</div>
         </div>
       </ion-item>
     </ion-list>

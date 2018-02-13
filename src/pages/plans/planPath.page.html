@@ -52,18 +52,17 @@
         <div *ngIf="path.status == 'ACTIVE' || path.showSteps">
           <div *ngFor="let step of path.steps">
             <ion-item no-lines *ngIf="showCancelledSteps || step.status != 'CANCELLED'">
-              <div class="flex-space-between">
-              <span>
-                {{step.step}}. step
-                <span *ngIf="step.status == 'ACTIVE'"> [{{step.startDate | date:'HH:mm:ss'}}]</span>
-                <span *ngIf="step.status == 'DONE'"> [{{step.finishDate | date:'HH:mm:ss'}}]</span>
-              </span>
-                <span *ngIf="step.status != 'DONE'">
-                <span *ngIf="step.side == 'SELL'">sell {{step.inAmount | number:'1.0-8'}} {{step.inCurrency}} to {{step.symbol.replace(step.inCurrency, '')}} at {{step.price | number: '1.0-8'}}</span>
-                <span *ngIf="step.side == 'BUY'">buy {{step.symbol.replace(step.inCurrency, '')}} for {{step.inAmount | number:'1.0-8'}} {{step.inCurrency}} at {{step.price | number: '1.0-8'}}</span>
-              </span>
-                <span *ngIf="step.status == 'DONE'">{{step.inAmount | number:'1.0-8'}} {{step.inCurrency}} -> {{step.outAmount | number:'1.0-8'}} {{step.outCurrency}} at {{step.price | number: '1.0-8'}}</span>
-                <span>{{step.status}}</span>
+              <div class="flex-vert">
+                <div class="flex-space-between">
+                  <span>{{step.step}}. step [{{step.startDate | date:'HH:mm:ss'}}<span *ngIf="step.finishDate"> - {{step.finishDate | date:'HH:mm:ss'}}</span>]</span>
+                  <span>{{step.status}}</span>
+                </div>
+                <span class="flex-space-between">
+                  <span *ngIf="step.status == 'DONE'">{{step.inAmount | number:'1.0-8'}} {{step.inCurrency}} -> {{step.outAmount | number:'1.0-8'}} {{step.outCurrency}}</span>
+                  <span *ngIf="step.status != 'DONE' && step.side == 'SELL'">sell {{step.inAmount | number:'1.0-8'}} {{step.inCurrency}} to {{step.symbol.replace(step.inCurrency, '')}}</span>
+                  <span *ngIf="step.status != 'DONE' && step.side == 'BUY'">buy {{step.symbol.replace(step.inCurrency, '')}} for {{step.inAmount | number:'1.0-8'}} {{step.inCurrency}}</span>
+                  <span>{{step.price | number: '1.0-8'}}</span>
+                </span>
               </div>
             </ion-item>
           </div>
