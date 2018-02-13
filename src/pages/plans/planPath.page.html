@@ -3,7 +3,8 @@
     <ion-title>
       <div class="flex-space-between">
         <span>#{{plan.id}} {{plan.type}} - {{plan.status}}</span>
-        <span *ngIf="plan.status == 'ACTIVE'" class="fake-link small-font" (click)="cancelPlan()">cancel</span>
+        <ion-icon name="more" (click)="showMenu($event)" class="pointer"></ion-icon>
+        <!--<span *ngIf="plan.status == 'ACTIVE'" class="fake-link small-font" (click)="cancelPlan()">cancel</span>-->
       </div>
     </ion-title>
   </ion-navbar>
@@ -21,7 +22,6 @@
           Show Cancelled Steps
         </span>
         <ion-spinner name="circles" *ngIf="pathsLoading"></ion-spinner>
-        <ion-icon name="refresh" class="pointer" *ngIf="!pathsLoading" (click)="loadPaths()"></ion-icon>
       </div>
     </ion-item>
     <ion-item *ngIf="pathsLoadingFailed">Failed to load plans</ion-item>
@@ -33,7 +33,7 @@
           <span>{{path.startAmount}} {{path.startCurrency}} in max {{path.maxSteps}} steps to {{path.destCurrency}}</span>
         </div>
         <div *ngIf="path.status == 'FINISHED'">
-          <div class="flex-vert">
+          <div class="flex-vert pointer">
             <div class="flex-space-between">
               <span>Finished [{{path.startDate | date:'HH:mm:ss'}} - {{path.finishDate | date:'HH:mm:ss'}}]</span>
               <span>{{path.destAmount | number:'1.0-8'}} {{path.destCurrency}}</span>

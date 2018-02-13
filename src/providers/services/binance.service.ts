@@ -46,6 +46,10 @@ export class BinanceService {
     return this.http.get<PathPlan[]>(this.path + "/plan/" + planId + "/paths");
   }
 
+  setAutoRestart(planId: number, autoRestart: boolean): Observable<PathPlan[]> {
+    return this.http.put<PathPlan[]>(this.path + "/plan/" + planId + "/autorepeat/" + autoRestart, {});
+  }
+
   createCircle(circle: Circle, amount: number, treshold: number, cancelOnTreshold: boolean): Observable<Plan> {
     let steps: any[] = [];
     circle.trades.forEach(t => {
@@ -68,6 +72,10 @@ export class BinanceService {
 
   cancelPlan(planId: number): Observable<Plan> {
     return this.http.get<Plan>(this.path + "/plan/" + planId + "/cancel");
+  }
+
+  deletePlan(planId: number): Observable<any> {
+    return this.http.delete<any>(this.path + "/plan/" + planId);
   }
 
   getCircles(planId: number): Observable<CirclePlan[]> {

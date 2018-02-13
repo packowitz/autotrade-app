@@ -30,7 +30,7 @@ import {BinanceAccountPage} from "../pages/accounts/binanceAccount";
 import {PlansPage} from "../pages/plans/plans.page";
 import {PlanCirclePage} from "../pages/plans/planCircle.page";
 import {CreateLoopPopover} from "../pages/plans/createLoop.popover";
-import {PlanPathPage} from "../pages/plans/planPath.page";
+import {PlanPathMenu, PlanPathPage} from "../pages/plans/planPath.page";
 import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
 
 @NgModule({
@@ -45,6 +45,7 @@ import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
     LoadingPage,
     LoginPage,
     PlanCirclePage,
+    PlanPathMenu,
     PlanPathPage,
     PlansPage,
     TabsPage,
@@ -75,6 +76,7 @@ import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
     LoadingPage,
     LoginPage,
     PlanCirclePage,
+    PlanPathMenu,
     PlanPathPage,
     PlansPage,
     TabsPage,
