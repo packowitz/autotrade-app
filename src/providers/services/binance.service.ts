@@ -9,6 +9,7 @@ import {Plan} from "../domain/plan.model";
 import {Circle} from "../../pages/circle/circle";
 import {CirclePlan} from "../domain/circlePlan.model";
 import {PathPlan} from "../domain/pathPlan.model";
+import {BinanceTrade} from "../domain/binanceTrade.model";
 
 @Injectable()
 export class BinanceService {
@@ -25,6 +26,10 @@ export class BinanceService {
 
   getDepth(symbol: string): Observable<Depth> {
     return this.http.get<Depth>(this.path + "/depth/" + symbol);
+  }
+
+  getLatestTrades(symbol: string): Observable<BinanceTrade[]> {
+    return this.http.get<BinanceTrade[]>(this.path + "/trades/" + symbol);
   }
 
   getAccount(): Observable<BinanceAccount> {

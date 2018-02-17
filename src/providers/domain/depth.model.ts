@@ -1,5 +1,7 @@
+import {DepthOffer} from "./depthOffer.model";
+
 export class Depth {
   lastUpdateId: number;
-  bids: number[];
-  asks: number[];
+  bids: DepthOffer[];
+  asks: DepthOffer[];
 }

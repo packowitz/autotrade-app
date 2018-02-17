@@ -8,7 +8,17 @@
 </ion-header>
 
 <ion-content padding>
+  <div *ngIf="trades.length > 0">
+    Last {{trades.length}} trades took {{asTimeDiff(trades[trades.length - 1].time - trades[0].time)}}<br/>
+    In last {{lastTradesInterval}} minutes were {{lastIntervalTrades.length}} trades with {{tradeBuyerMaker}} sells to {{lastIntervalTrades.length - tradeBuyerMaker}} buys<br/>
+  </div>
   <div *ngIf="depth">
-    {{depth.lastUpdateId}}
+    Trade point analysis based on depth:
+    <div>
+      Place buy bid before {{bestBuyPoint}}
+    </div>
+    <div>
+      Place sell bid before {{bestSellPoint}}
+    </div>
   </div>
 </ion-content>
