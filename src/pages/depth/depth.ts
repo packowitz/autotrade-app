@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController, NavParams, PopoverController} from 'ionic-angular';
 import {BinanceService} from "../../providers/services/binance.service";
 import {Depth} from "../../providers/domain/depth.model";
 import {BinanceTrade} from "../../providers/domain/binanceTrade.model";
 import {DepthOffer} from "../../providers/domain/depthOffer.model";
+import {CreateOneMarketPopover} from "./createOneMarket.popover";
 
 @Component({
   templateUrl: 'depth.html'
@@ -26,7 +27,8 @@ export class DepthPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public binance: BinanceService) {
+              public binance: BinanceService,
+              public popoverCtrl: PopoverController) {
     this.symbol = navParams.get('symbol');
     this.refreshData();
   }
@@ -127,6 +129,11 @@ export class DepthPage {
     }
     if(secs < 10) asString += "0";
     return asString + secs + " hours";
+  }
+
+  createPlan() {
+    let popover = this.popoverCtrl.create(CreateOneMarketPopover, {symbol: this.symbol});
+    popover.present();
   }
 
 }

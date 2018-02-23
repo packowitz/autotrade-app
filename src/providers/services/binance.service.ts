@@ -10,6 +10,7 @@ import {Circle} from "../../pages/circle/circle";
 import {CirclePlan} from "../domain/circlePlan.model";
 import {PathPlan} from "../domain/pathPlan.model";
 import {BinanceTrade} from "../domain/binanceTrade.model";
+import {OneMarketPlan} from "../domain/oneMarketPlan.model";
 
 @Injectable()
 export class BinanceService {
@@ -51,24 +52,23 @@ export class BinanceService {
     return this.http.get<PathPlan[]>(this.path + "/plan/" + planId + "/paths");
   }
 
-  setAutoRestart(planId: number, autoRestart: boolean): Observable<PathPlan[]> {
-    return this.http.put<PathPlan[]>(this.path + "/plan/" + planId + "/autorepeat/" + autoRestart, {});
+  createOneMarket(symbol: string, minProfit: number, startCurrency: string, startAmount: number, autoRestart: boolean): Observable<Plan> {
+    let body: any = {
+      symbol: symbol,
+      minProfit: minProfit,
+      startCurrency: startCurrency,
+      startAmount: startAmount,
+      autoRestart: autoRestart
+    };
+    return this.http.post<Plan>(this.path + "/plan/onemarket", body);
   }
 
-  createCircle(circle: Circle, amount: number, treshold: number, cancelOnTreshold: boolean): Observable<Plan> {
-    let steps: any[] = [];
-    circle.trades.forEach(t => {
-      steps.push({symbol: t.ticker.symbol, side: t.isBuy ? 'buy' : 'sell', price: t.tradePoint});
-    });
-    let body: any = {
-      startCurrency: circle.baseCur,
-      startAmount: amount,
-      risk: circle.riskLevel.toUpperCase(),
-      treshold: treshold,
-      cancelOnTreshold: cancelOnTreshold,
-      steps: steps
-    };
-    return this.http.post<Plan>(this.path + "/plan/circle", body);
+  getOneMarket(planId: number): Observable<OneMarketPlan> {
+    return this.http.get<OneMarketPlan>(this.path + "/plan/" + planId + "/onemarket");
+  }
+
+  setAutoRestart(planId: number, autoRestart: boolean): Observable<any> {
+    return this.http.put<any>(this.path + "/plan/" + planId + "/autorepeat/" + autoRestart, {});
   }
 
   getPlans(): Observable<Plan[]> {
@@ -81,9 +81,5 @@ export class BinanceService {
 
   deletePlan(planId: number): Observable<any> {
     return this.http.delete<any>(this.path + "/plan/" + planId);
-  }
-
-  getCircles(planId: number): Observable<CirclePlan[]> {
-    return this.http.get<CirclePlan[]>(this.path + "/plan/" + planId + "/circles");
   }
 }

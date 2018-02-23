@@ -4,9 +4,9 @@ import {Model} from "../../providers/services/model.service";
 import {BinanceAccountPage} from "../accounts/binanceAccount";
 import {BinanceService} from "../../providers/services/binance.service";
 import {Plan} from "../../providers/domain/plan.model";
-import {PlanCirclePage} from "./planCircle.page";
 import {CreateLoopPopover} from "./createLoop.popover";
 import {PlanPathPage} from "./planPath.page";
+import {PlanOneMarketPage} from "./planOneMarket.page";
 
 @Component({
   templateUrl: 'plans.page.html'
@@ -47,8 +47,8 @@ export class PlansPage {
   goPlanDetails(plan: Plan) {
     if(plan.type == 'PATH') {
       this.nav.push(PlanPathPage, {plan: plan});
-    } else if(plan.type == 'CIRCLE') {
-      this.nav.push(PlanCirclePage, {plan: plan});
+    } else if(plan.type == 'ONEMARKET') {
+      this.nav.push(PlanOneMarketPage, {plan: plan});
     }
   }
 

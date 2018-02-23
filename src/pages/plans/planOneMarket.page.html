@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      <div class="flex-space-between">
+        <span>#{{plan.id}} {{plan.type}} - {{plan.status}}</span>
+        <ion-icon name="more" (click)="showMenu($event)" class="pointer"></ion-icon>
+      </div>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item *ngIf="pathsLoadingFailed">Failed to load plans</ion-item>
+  <div *ngIf="oneMarket">
+    <ion-item>
+      <div class="flex-vert pointer">
+        <span>Trade {{oneMarket.startAmount}} {{oneMarket.startCurrency}} in {{oneMarket.symbol}}</span>
+        <span *ngIf="oneMarket.status == 'ACTIVE'">Active since {{oneMarket.startDate | date:'HH:mm:ss'}}</span>
+        <span *ngIf="oneMarket.status == 'CANCELLED'">Cancelled at {{oneMarket.finishDate | date:'HH:mm:ss'}}</span>
+        <span *ngIf="oneMarket.status == 'FINISHED'">Finished at {{oneMarket.finishDate | date:'HH:mm:ss'}}</span>
+        <span>Balance: {{oneMarket.balance | number:'1.0-8'}} ({{100 * oneMarket.balance / oneMarket.startAmount | number:'1.0-2'}}%)</span>
+      </div>
+    </ion-item>
+    <ion-item *ngFor="let step of oneMarket.steps">
+      <div class="flex-vert">
+        <div class="flex-space-between">
+          <span>{{step.step}}. Step [{{step.startDate | date:'HH:mm:ss'}}<span *ngIf="step.finishDate"> - {{step.finishDate | date:'HH:mm:ss'}}</span>]</span>
+          <span>{{step.status}}</span>
+        </div>
+        <span class="small-font" *ngIf="step.inFilled > 0">Converted {{step.inFilled}} {{step.inCurrency}} into {{step.outAmount}} {{step.outCurrency}}</span>
+        <span *ngIf="step.status == 'ACTIVE' && step.side == 'BUY'" class="small-font">
+          buying {{step.orderAltcoinQty | number:'1.0-8'}} {{step.outCurrency}} for {{step.orderBasecoinQty | number:'1.0-8'}} {{step.inCurrency}} at {{step.price | number:'1.0-8'}}
+        </span>
+        <span *ngIf="step.status == 'ACTIVE' && step.side == 'SELL'" class="small-font">
+          selling {{step.orderAltcoinQty | number:'1.0-8'}} {{step.inCurrency}} to {{step.orderBasecoinQty | number:'1.0-8'}} {{step.outCurrency}} at {{step.price | number:'1.0-8'}}
+        </span>
+      </div>
+    </ion-item>
+  </div>
+</ion-content>

@@ -28,10 +28,11 @@ import {UserService} from "../providers/services/user.service";
 import {JwtTokenInterceptor} from "../providers/interceptors/jwt_token.interceptor";
 import {BinanceAccountPage} from "../pages/accounts/binanceAccount";
 import {PlansPage} from "../pages/plans/plans.page";
-import {PlanCirclePage} from "../pages/plans/planCircle.page";
 import {CreateLoopPopover} from "../pages/plans/createLoop.popover";
 import {PlanPathMenu, PlanPathPage} from "../pages/plans/planPath.page";
 import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
+import {CreateOneMarketPopover} from "../pages/depth/createOneMarket.popover";
+import {PlanOneMarketMenu, PlanOneMarketPage} from "../pages/plans/planOneMarket.page";
 
 @NgModule({
   declarations: [
@@ -40,13 +41,15 @@ import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
     CirclePage,
     CircleDetailsPage,
     CreateLoopPopover,
+    CreateOneMarketPopover,
     DepthPage,
     HomePage,
     LoadingPage,
     LoginPage,
-    PlanCirclePage,
     PlanPathMenu,
     PlanPathPage,
+    PlanOneMarketPage,
+    PlanOneMarketMenu,
     PlansPage,
     TabsPage,
     TickerPage,
@@ -71,13 +74,15 @@ import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
     CirclePage,
     CircleDetailsPage,
     CreateLoopPopover,
+    CreateOneMarketPopover,
     DepthPage,
     HomePage,
     LoadingPage,
     LoginPage,
-    PlanCirclePage,
     PlanPathMenu,
     PlanPathPage,
+    PlanOneMarketPage,
+    PlanOneMarketMenu,
     PlansPage,
     TabsPage,
     TickerPage
