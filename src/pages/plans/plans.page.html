@@ -23,7 +23,14 @@
             <span>#{{plan.id}} {{plan.type}}</span>
             <span>{{plan.status}}</span>
           </div>
-          <div>{{plan.description}}</div>
+          <div class="small-font flex-space-between">
+            <span>Started {{getTimeDiff(plan.startDate)}} ago</span>
+            <span>{{plan.runsDone}} runs gained {{plan.balancePerc * 100 | number:'1.0-2'}}%</span>
+          </div>
+          <div class="small-font flex-space-between">
+            <span>{{plan.description}}</span>
+            <span *ngIf="plan.lastActionDate">Last trade {{getTimeDiff(plan.lastActionDate)}} ago</span>
+          </div>
         </div>
       </ion-item>
     </ion-list>

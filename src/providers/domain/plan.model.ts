@@ -3,4 +3,8 @@ export class Plan {
   type: string;
   status: string;
   description: string;
+  startDate: string;
+  lastActionDate: string;
+  balancePerc: number;
+  runsDone: number;
 }
