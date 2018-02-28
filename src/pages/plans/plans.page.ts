@@ -7,7 +7,7 @@ import {Plan} from "../../providers/domain/plan.model";
 import {CreateLoopPopover} from "./createLoop.popover";
 import {PlanPathPage} from "./planPath.page";
 import {PlanOneMarketPage} from "./planOneMarket.page";
-import {Util} from "../../providers/domain/util";
+import {Util} from "../../providers/services/util";
 
 @Component({
   templateUrl: 'plans.page.html'
@@ -20,7 +20,8 @@ export class PlansPage {
   constructor(public model: Model,
               public nav: NavController,
               public binance: BinanceService,
-              public popoverCtrl: PopoverController) {
+              public popoverCtrl: PopoverController,
+              public util: Util) {
     this.loadPlans();
   }
 
@@ -43,10 +44,6 @@ export class PlansPage {
         this.plansLoadingFailed = true;
       }
     );
-  }
-
-  getTimeDiff(date: string): string {
-    return Util.getTimeDiff(date);
   }
 
   goPlanDetails(plan: Plan) {

@@ -6,6 +6,7 @@ import {Plan} from "../../providers/domain/plan.model";
 import {PathPlan} from "../../providers/domain/pathPlan.model";
 import {PlanStep} from "../../providers/domain/planStep.model";
 import {OneMarketPlan} from "../../providers/domain/oneMarketPlan.model";
+import {Util} from "../../providers/services/util";
 
 @Component({
   templateUrl: 'planOneMarket.page.html'
@@ -23,7 +24,8 @@ export class PlanOneMarketPage {
               public binance: BinanceService,
               public navParams: NavParams,
               public toastCtrl: ToastController,
-              public popoverCtrl: PopoverController) {
+              public popoverCtrl: PopoverController,
+              public util: Util) {
     this.plan = this.navParams.get("plan");
   }
 

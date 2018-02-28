@@ -33,6 +33,7 @@ import {PlanPathMenu, PlanPathPage} from "../pages/plans/planPath.page";
 import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
 import {CreateOneMarketPopover} from "../pages/depth/createOneMarket.popover";
 import {PlanOneMarketMenu, PlanOneMarketPage} from "../pages/plans/planOneMarket.page";
+import {Util} from "../providers/services/util";
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import {PlanOneMarketMenu, PlanOneMarketPage} from "../pages/plans/planOneMarket
     StatusBar,
     SplashScreen,
     UserService,
+    Util,
     {provide: HTTP_INTERCEPTORS, useClass: JwtTokenInterceptor, multi: true},
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

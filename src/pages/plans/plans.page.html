@@ -31,12 +31,12 @@
             <span>{{plan.status}}</span>
           </div>
           <div class="small-font flex-space-between">
-            <span>Started {{getTimeDiff(plan.startDate)}} ago</span>
+            <span>Started {{util.getTimeDiff(plan.startDate)}} ago</span>
             <span>{{plan.runsDone}} runs gained {{plan.balancePerc * 100 | number:'1.0-2'}}%</span>
           </div>
           <div class="small-font flex-space-between">
             <span>{{plan.description}}</span>
-            <span *ngIf="plan.status == 'ACTIVE' && plan.lastActionDate">{{getTimeDiff(plan.lastActionDate)}} idle</span>
+            <span *ngIf="plan.status == 'ACTIVE' && plan.lastActionDate">{{util.getTimeDiff(plan.lastActionDate)}} idle</span>
           </div>
         </div>
       </ion-item>

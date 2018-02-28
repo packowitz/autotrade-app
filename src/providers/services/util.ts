@@ -1,7 +1,12 @@
+import {Injectable} from "@angular/core";
+
+@Injectable()
 export class Util {
-  public static getTimeDiff(date: string): string {
-    let dateInMs: number = new Date(Date.parse(date)).getTime();
-    let diffInSecs: number = Math.floor((new Date().getTime() - dateInMs) / 1000);
+
+  public getTimeDiff(dateFrom: string, dateTo?: string): string {
+    let dateFromInMs: number = new Date(Date.parse(dateFrom)).getTime();
+    let dateToInMs: number = dateTo ? new Date(Date.parse(dateTo)).getTime() : new Date().getTime();
+    let diffInSecs: number = Math.floor((dateToInMs - dateFromInMs) / 1000);
     if(diffInSecs < 60) {
       return diffInSecs + " secs";
     }
@@ -19,4 +24,5 @@ export class Util {
     let hours: number = diffInHours % 24;
     return diffInDays + ":" + (hours > 10 ? hours : '0' + hours) + " days"
   }
+
 }
