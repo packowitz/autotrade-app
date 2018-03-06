@@ -5,6 +5,7 @@ import {BinanceService} from "../../providers/services/binance.service";
 import {Plan} from "../../providers/domain/plan.model";
 import {PathPlan} from "../../providers/domain/pathPlan.model";
 import {PlanStep} from "../../providers/domain/planStep.model";
+import {Util} from "../../providers/services/util";
 
 @Component({
   templateUrl: 'planPath.page.html'
@@ -17,14 +18,13 @@ export class PlanPathPage {
   plan: Plan;
   paths: PathPlan[] = [];
 
-  showCancelledSteps: boolean = false;
-
   constructor(public model: Model,
               public nav: NavController,
               public binance: BinanceService,
               public navParams: NavParams,
               public toastCtrl: ToastController,
-              public popoverCtrl: PopoverController) {
+              public popoverCtrl: PopoverController,
+              public util: Util) {
     this.plan = this.navParams.get("plan");
     this.loadPaths();
   }
@@ -34,6 +34,10 @@ export class PlanPathPage {
     popover.present({
       ev: myEvent
     });
+  }
+
+  getFirstStep(path: PathPlan): PlanStep {
+    return path.steps.find(step => step.step == 1);
   }
 
   getDoneStep(path: PathPlan, idx: number): PlanStep {

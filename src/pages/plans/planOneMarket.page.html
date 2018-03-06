@@ -29,7 +29,7 @@
           <span>{{step.status}}</span>
         </div>
         <span class="small-font">Started on {{step.startDate | date:'HH:mm dd/MM'}}</span>
-        <span class="small-font" *ngIf="step.inFilled > 0">Converted {{step.inFilled}} {{step.inCurrency}} into {{step.outAmount}} {{step.outCurrency}}</span>
+        <span class="small-font" *ngIf="step.inFilled > 0">Converted {{step.inFilled | number:'1.0-8'}} {{step.inCurrency}} into {{step.outAmount | number:'1.0-8'}} {{step.outCurrency}}</span>
         <span *ngIf="step.status == 'ACTIVE' && step.side == 'BUY'" class="small-font">
           buying {{step.orderAltcoinQty | number:'1.0-8'}} {{step.outCurrency}} for {{step.orderBasecoinQty | number:'1.0-8'}} {{step.inCurrency}} at {{step.price | number:'1.0-8'}}
         </span>
