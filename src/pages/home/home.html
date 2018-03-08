@@ -18,7 +18,25 @@
         </div>
       </ion-item>
       <ion-item *ngIf="balancesLoadingFailed">Failed to load balances</ion-item>
-      <ion-item *ngFor="let bal of model.binanceBalances">{{bal.asset}}: {{bal.free + bal.locked}}</ion-item>
+      <ion-item *ngFor="let bal of model.binanceBalances | sort:'totalInBtc-desc'">
+        <div class="flex-vert small-font">
+          <div class="flex-space-between">
+            <span class="larger-font">{{bal.asset}}:</span>
+            <span>{{bal.total | number:'1.0-8'}}</span>
+            <span>{{bal.free | number:'1.0-8'}} free</span>
+          </div>
+          <div class="flex-space-between">
+            <span>In BTC:</span>
+            <span>{{bal.totalInBtc | number:'1.0-8'}}</span>
+            <span>{{bal.freeInBtc | number:'1.0-8'}} free</span>
+          </div>
+          <div class="flex-space-between">
+            <span>In USDT:</span>
+            <span>{{bal.totalInUsdt | number:'1.0-8'}}</span>
+            <span>{{bal.freeInUsdt | number:'1.0-8'}} free</span>
+          </div>
+        </div>
+      </ion-item>
     </ion-list>
   </div>
 </ion-content>

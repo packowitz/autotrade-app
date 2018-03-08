@@ -37,8 +37,8 @@
               <span>{{path.destAmount | number:'1.0-8'}} {{path.destCurrency}}</span>
             </div>
             <div class="flex-start flex-wrap" *ngIf="path.startCurrency == path.destCurrency">
-              <span *ngIf="path.destAmount >= getFirstStep(path).inAmount" class="color-success margin-right-m">+{{(100 * path.destAmount / getFirstStep(path).inAmount) - 100 | number:'1.0-2'}}% {{path.destCurrency}}</span>
-              <span *ngIf="path.destAmount < getFirstStep(path).inAmount" class="color-failure margin-right-m">{{(100 * path.destAmount / getFirstStep(path).inAmount) - 100 | number:'1.0-2'}}% {{path.destCurrency}}</span>
+              <span *ngIf="path.destAmount >= getFirstStep(path).inFilled" class="color-success margin-right-m">+{{(100 * path.destAmount / getFirstStep(path).inFilled) - 100 | number:'1.0-2'}}% {{path.destCurrency}}</span>
+              <span *ngIf="path.destAmount < getFirstStep(path).inFilled" class="color-failure margin-right-m">{{(100 * path.destAmount / getFirstStep(path).inFilled) - 100 | number:'1.0-2'}}% {{path.destCurrency}}</span>
               <span *ngFor="let step of path.steps | filterDoneSteps; let i = index">
                 <span *ngIf="i > 0 && (step.outAmount - path.steps[i - 1].inFilled) > 0" class="color-success margin-right-m">
                   +{{step.outAmount - path.steps[i - 1].inFilled | number:'1.0-8'}} {{step.outCurrency}}

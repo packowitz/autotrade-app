@@ -1,3 +1,5 @@
+import {TickerStats} from "./tickerStats.model";
+
 export class Ticker {
   symbol: string;
   bidPrice: string;
@@ -5,4 +7,5 @@ export class Ticker {
   askPrice: string;
   askQty: string;
   perc: number;
+  stats24h: TickerStats;
 }

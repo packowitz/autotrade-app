@@ -34,7 +34,7 @@ export class HomePage {
     this.balancesLoadingFailed = false;
     this.binance.getAccount().subscribe(
       data => {
-        this.model.binanceBalances = data.balances;
+        this.model.setBalances(data.balances);
         this.balancesLoading = false;
       }, error => {
         this.balancesLoading = false;

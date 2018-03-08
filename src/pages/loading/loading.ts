@@ -6,6 +6,7 @@ import {UserService} from "../../providers/services/user.service";
 import {AlertController, NavController} from "ionic-angular";
 import {LoginPage} from "../login/login";
 import {TabsPage} from "../tabs/tabs";
+import {BinanceService} from "../../providers/services/binance.service";
 
 @Component({
   templateUrl: 'loading.html'
@@ -17,7 +18,8 @@ export class LoadingPage {
               public nav: NavController,
               public localStorage: LocalStorage,
               public userService: UserService,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController,
+              public binance: BinanceService) {
     this.init();
   }
 
@@ -26,6 +28,8 @@ export class LoadingPage {
       this.loadLocalStorage();
     } else if (!this.state.loadedUser) {
       this.loadUser();
+    } else if (!this.state.loadedTicker) {
+      this.loadTicker();
     } else {
       this.nav.setRoot(TabsPage);
     }
@@ -64,4 +68,14 @@ export class LoadingPage {
       );
     }
   }
+
+  loadTicker() {
+    this.binance.getAllBookTickers().subscribe(data => {
+      this.model.ticker = data;
+      this.model.tickerUpdated = new Date().getTime();
+      this.state.loadedTicker = true;
+      this.init();
+    }, error => {console.log("got error when initially loading ticker")});
+  }
+
 }
