@@ -3,4 +3,7 @@ export class AuditLog {
   level: string;
   title: string;
   message: string;
+
+  //for ui usage
+  showMessage: boolean;
 }
