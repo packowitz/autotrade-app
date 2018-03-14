@@ -1,4 +1,5 @@
 export class PlanStep {
+  id: number;
   step: number;
   status: string;
   symbol: string;

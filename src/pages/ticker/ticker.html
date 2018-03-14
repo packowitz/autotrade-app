@@ -35,5 +35,18 @@
         </ion-item>
       </div>
     </ion-list>
+    <ion-list>
+      <ion-list-header (click)="ethExpand = !ethExpand">ETH</ion-list-header>
+      <div *ngIf="ethExpand">
+        <ion-item *ngFor="let ticker of model.ticker | eth | sort: 'perc-desc'" (click)="gotoDepth(ticker.symbol)">
+          <div class="flex-space-between">
+            <span>{{ticker.symbol.substr(0, ticker.symbol.length - 3)}}/BTC</span>
+            <span class="small-font margin-left-s">bid:{{ticker.bidPrice | number: '1.4-4'}}; ask:{{ticker.askPrice | number: '1.4-4'}}</span>
+            <span class="flex-grow">&nbsp;</span>
+            <span>{{ticker.perc * 100 | number:'1.2-2'}}%</span>
+          </div>
+        </ion-item>
+      </div>
+    </ion-list>
   </div>
 </ion-content>

@@ -7,6 +7,7 @@ import {PathPlan} from "../../providers/domain/pathPlan.model";
 import {PlanStep} from "../../providers/domain/planStep.model";
 import {OneMarketPlan} from "../../providers/domain/oneMarketPlan.model";
 import {Util} from "../../providers/services/util";
+import {AuditLogsPopover} from "./auditLogs.popover";
 
 @Component({
   templateUrl: 'planOneMarket.page.html'
@@ -69,6 +70,12 @@ export class PlanOneMarketPage {
         this.loadingFailed = true;
       }
     );
+  }
+
+  showLogs(step: PlanStep) {
+    this.binance.getAuditLogs(step.id).subscribe(logs => {
+      this.popoverCtrl.create(AuditLogsPopover, {logs: logs}, {cssClass: 'widerPopover'}).present();
+    });
   }
 
 }

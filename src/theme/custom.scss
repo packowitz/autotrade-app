@@ -40,6 +40,14 @@
   display: none;
 }
 
+.widerPopover.popover-md {
+  .popover-content{
+    width: 80%;
+    min-width: 300px;
+    max-width: 650px;
+  }
+}
+
 .loading-spin {
   animation: loading-spin 1s linear infinite;
 }

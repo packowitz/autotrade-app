@@ -6,11 +6,10 @@ import {Model} from "./model.service";
 import {Depth} from "../domain/depth.model";
 import {BinanceAccount} from "../domain/binanceAccount.model";
 import {Plan} from "../domain/plan.model";
-import {Circle} from "../../pages/circle/circle";
-import {CirclePlan} from "../domain/circlePlan.model";
 import {PathPlan} from "../domain/pathPlan.model";
 import {BinanceTrade} from "../domain/binanceTrade.model";
 import {OneMarketPlan} from "../domain/oneMarketPlan.model";
+import {AuditLog} from "../domain/auditLog.model";
 
 @Injectable()
 export class BinanceService {
@@ -81,5 +80,9 @@ export class BinanceService {
 
   deletePlan(planId: number): Observable<any> {
     return this.http.delete<any>(this.path + "/plan/" + planId);
+  }
+
+  getAuditLogs(stepId: number): Observable<AuditLog[]> {
+    return this.http.get<AuditLog[]>(this.path + "/step/" + stepId + "/logs");
   }
 }

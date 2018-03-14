@@ -34,10 +34,13 @@ import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
 import {CreateOneMarketPopover} from "../pages/depth/createOneMarket.popover";
 import {PlanOneMarketMenu, PlanOneMarketPage} from "../pages/plans/planOneMarket.page";
 import {Util} from "../providers/services/util";
+import {EthFilter} from "../providers/pipes/eth.pipe";
+import {AuditLogsPopover} from "../pages/plans/auditLogs.popover";
 
 @NgModule({
   declarations: [
     MyApp,
+    AuditLogsPopover,
     BinanceAccountPage,
     CirclePage,
     CircleDetailsPage,
@@ -59,6 +62,7 @@ import {Util} from "../providers/services/util";
     BuyCurrencyFilter,
     BnbFilter,
     BtcFilter,
+    EthFilter,
     DoneStepFiter,
     SortPipe
   ],
@@ -71,6 +75,7 @@ import {Util} from "../providers/services/util";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    AuditLogsPopover,
     BinanceAccountPage,
     CirclePage,
     CircleDetailsPage,

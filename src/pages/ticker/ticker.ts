@@ -11,6 +11,7 @@ export class TickerPage {
 
   bnbExpand: boolean = false;
   btcExpand: boolean = false;
+  ethExpand: boolean = false;
 
   constructor(public nav: NavController, public model: Model, public binance: BinanceService) {
     if(!this.model.ticker || this.model.tickerUpdated < (new Date().getTime() - 20000)) {

@@ -3,7 +3,6 @@ import { NavController } from 'ionic-angular';
 import {Model} from "../../providers/services/model.service";
 import {BinanceAccountPage} from "../accounts/binanceAccount";
 import {BinanceService} from "../../providers/services/binance.service";
-import {BinanceBalance} from "../../providers/domain/binanceBalance.model";
 
 @Component({
   templateUrl: 'home.html'

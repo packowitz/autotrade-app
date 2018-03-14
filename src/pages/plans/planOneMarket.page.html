@@ -21,7 +21,7 @@
         <span>Balance: {{oneMarket.balance | number:'1.0-8'}} ({{100 * oneMarket.balance / oneMarket.startAmount | number:'1.0-2'}}%)</span>
       </div>
     </ion-item>
-    <ion-item *ngFor="let step of oneMarket.steps">
+    <ion-item *ngFor="let step of oneMarket.steps" class="pointer" (click)="showLogs(step)">
       <div class="flex-vert">
         <div class="flex-space-between">
           <span *ngIf="!step.finishDate">{{step.step}}. Step started {{util.getTimeDiff(step.startDate)}} ago</span>
