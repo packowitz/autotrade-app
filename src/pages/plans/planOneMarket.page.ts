@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import {NavController, NavParams, PopoverController, ToastController, ViewController} from 'ionic-angular';
+import {
+  AlertController, NavController, NavParams, PopoverController, ToastController,
+  ViewController
+} from 'ionic-angular';
 import {Model} from "../../providers/services/model.service";
 import {BinanceService} from "../../providers/services/binance.service";
 import {Plan} from "../../providers/domain/plan.model";
@@ -8,6 +11,8 @@ import {PlanStep} from "../../providers/domain/planStep.model";
 import {OneMarketPlan} from "../../providers/domain/oneMarketPlan.model";
 import {Util} from "../../providers/services/util";
 import {AuditLogsPopover} from "./auditLogs.popover";
+import {DepthPage} from "../depth/depth";
+import {Ticker} from "../../providers/domain/ticker";
 
 @Component({
   templateUrl: 'planOneMarket.page.html'
@@ -16,9 +21,11 @@ export class PlanOneMarketPage {
 
   loading: boolean = false;
   loadingFailed: boolean = false;
+  refreshingTicker: boolean = false;
 
   plan: Plan;
   oneMarket: OneMarketPlan;
+  ticker: Ticker;
 
   constructor(public model: Model,
               public nav: NavController,
@@ -26,6 +33,7 @@ export class PlanOneMarketPage {
               public navParams: NavParams,
               public toastCtrl: ToastController,
               public popoverCtrl: PopoverController,
+              public alertCtrl: AlertController,
               public util: Util) {
     this.plan = this.navParams.get("plan");
   }
@@ -64,6 +72,7 @@ export class PlanOneMarketPage {
     this.binance.getOneMarket(this.plan.id).subscribe(
       data => {
         this.oneMarket = data;
+        this.ticker = this.model.getTicker(this.oneMarket.symbol);
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -76,6 +85,50 @@ export class PlanOneMarketPage {
     this.binance.getAuditLogs(step.id).subscribe(logs => {
       this.popoverCtrl.create(AuditLogsPopover, {logs: logs}, {cssClass: 'widerPopover'}).present();
     });
+  }
+
+  gotoDepth() {
+    this.nav.push(DepthPage, {symbol: this.oneMarket.symbol});
+  }
+
+  approxLoss(): number {
+    let x: number;
+    if(this.oneMarket.steps[0].side == 'BUY') {
+      x = this.oneMarket.steps[0].price / parseFloat(this.ticker.bidPrice);
+    } else {
+      x = parseFloat(this.ticker.askPrice) / this.oneMarket.steps[0].price;
+    }
+    x = 100 * (x - 1);
+    return Math.round(100 * x) / 100;
+  }
+
+  acceptLoss() {
+    this.alertCtrl.create({
+      subTitle: 'Accept loss of approx ' + this.approxLoss() + '%',
+      message: 'This will remove the price threshold of last step to start trading again.',
+      buttons: [
+        {text: 'Cancel'},
+        {text: 'Okay', handler: () => {
+            this.binance.removeThreshold(this.plan.id, this.oneMarket.steps[0].id).subscribe(() => {
+              this.toastCtrl.create({
+                message: 'Removed threshold from last step',
+                duration: 2000,
+                position: 'top'
+              }).present();
+            });
+        }}
+      ]
+    }).present();
+  }
+
+  refreshTicker() {
+    this.refreshingTicker = true;
+    this.binance.getAllBookTickers().subscribe(data => {
+      this.model.ticker = data;
+      this.model.tickerUpdated = new Date().getTime();
+      this.ticker = this.model.getTicker(this.oneMarket.symbol);
+      this.refreshingTicker = false;
+    }, error => {this.refreshingTicker = false; console.log("got error refreshing ticker")});
   }
 
 }

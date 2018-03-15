@@ -14,11 +14,17 @@
   <div *ngIf="oneMarket">
     <ion-item>
       <div class="flex-vert pointer">
-        <span>Trade {{oneMarket.startAmount}} {{oneMarket.startCurrency}} in {{oneMarket.symbol}}</span>
+        <span>Trade {{oneMarket.startAmount}} {{oneMarket.startCurrency}} in <span class="fake-link" (click)="gotoDepth()">{{oneMarket.symbol}}</span></span>
         <span *ngIf="oneMarket.status == 'ACTIVE'">Activated {{util.getTimeDiff(oneMarket.startDate)}} ago</span>
         <span *ngIf="oneMarket.status == 'CANCELLED'">Cancelled {{util.getTimeDiff(oneMarket.finishDate)}} ago</span>
         <span *ngIf="oneMarket.status == 'FINISHED'">Finished {{util.getTimeDiff(oneMarket.finishDate)}} ago</span>
         <span>Balance: {{oneMarket.balance | number:'1.0-8'}} ({{100 * oneMarket.balance / oneMarket.startAmount | number:'1.0-2'}}%)</span>
+        <span *ngIf="oneMarket.steps.length > 0 && oneMarket.steps[0].step == 2" class="flex-space-between">
+          <span *ngIf="oneMarket.steps[0].side == 'BUY'">Highest bid is {{ticker.bidPrice}} <ion-icon name="refresh" (click)="refreshTicker()" *ngIf="!refreshingTicker"></ion-icon><ion-spinner name="crescent" *ngIf="refreshingTicker"></ion-spinner></span>
+          <span *ngIf="oneMarket.steps[0].side == 'SELL'">Lowest ask is {{ticker.askPrice}} <ion-icon name="refresh" (click)="refreshTicker()" *ngIf="!refreshingTicker"></ion-icon><ion-spinner name="crescent" *ngIf="refreshingTicker"></ion-spinner></span>
+          <span>({{approxLoss()}}%)</span>
+          <button ion-button small color="danger" (click)="acceptLoss()">Accept Loss</button>
+        </span>
       </div>
     </ion-item>
     <ion-item *ngFor="let step of oneMarket.steps" class="pointer" (click)="showLogs(step)">

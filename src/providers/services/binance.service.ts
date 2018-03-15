@@ -10,6 +10,7 @@ import {PathPlan} from "../domain/pathPlan.model";
 import {BinanceTrade} from "../domain/binanceTrade.model";
 import {OneMarketPlan} from "../domain/oneMarketPlan.model";
 import {AuditLog} from "../domain/auditLog.model";
+import {PlanStep} from "../domain/planStep.model";
 
 @Injectable()
 export class BinanceService {
@@ -84,5 +85,9 @@ export class BinanceService {
 
   getAuditLogs(stepId: number): Observable<AuditLog[]> {
     return this.http.get<AuditLog[]>(this.path + "/step/" + stepId + "/logs");
+  }
+
+  removeThreshold(planId: number, stepId: number): Observable<PlanStep> {
+    return this.http.post<PlanStep>(this.path + "/plan/" + planId + "/step/" + stepId + "/removeThreshold", {});
   }
 }
