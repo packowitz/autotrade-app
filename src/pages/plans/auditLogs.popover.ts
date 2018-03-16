@@ -5,6 +5,12 @@ import {AuditLog} from "../../providers/domain/auditLog.model";
 @Component({
   template: `
     <ion-list>
+      <ion-list-header>
+        <div class="flex-space-between">
+          <span>Audit Logs</span>
+          <ion-icon (click)="close()" name="close" class="pointer"></ion-icon>
+        </div>
+      </ion-list-header>
       <ion-item *ngFor="let log of logs">
         <div class="flex-vert">
           <span (click)="log.showMessage = !log.showMessage" class="flex-space-between" [class.pointer]="log.message">{{log.timestamp | date:'HH:mm:ss'}} {{log.title}}<ion-icon *ngIf="log.message" name="arrow-down" md="ios-arrow-down"></ion-icon></span>
