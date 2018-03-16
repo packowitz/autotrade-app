@@ -22,8 +22,7 @@
         <span *ngIf="oneMarket.steps.length > 0 && oneMarket.steps[0].step == 2" class="flex-space-between">
           <span *ngIf="oneMarket.steps[0].side == 'BUY'">Highest bid is {{ticker.bidPrice}} <ion-icon name="refresh" (click)="refreshTicker()" *ngIf="!refreshingTicker"></ion-icon><ion-spinner name="crescent" *ngIf="refreshingTicker"></ion-spinner></span>
           <span *ngIf="oneMarket.steps[0].side == 'SELL'">Lowest ask is {{ticker.askPrice}} <ion-icon name="refresh" (click)="refreshTicker()" *ngIf="!refreshingTicker"></ion-icon><ion-spinner name="crescent" *ngIf="refreshingTicker"></ion-spinner></span>
-          <span>({{approxLoss()}}%)</span>
-          <button ion-button small color="danger" (click)="acceptLoss()">Accept Loss</button>
+          <button ion-button small color="danger" (click)="acceptLoss()">{{approxLoss()}}%</button>
         </span>
       </div>
     </ion-item>
