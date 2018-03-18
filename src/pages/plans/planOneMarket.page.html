@@ -29,8 +29,8 @@
     <ion-item *ngFor="let step of oneMarket.steps" class="pointer" (click)="showLogs(step)">
       <div class="flex-vert">
         <div class="flex-space-between">
-          <span *ngIf="!step.finishDate">{{step.step}}. Step started {{util.getTimeDiff(step.startDate)}} ago</span>
-          <span *ngIf="step.finishDate">{{step.step}}. Step took {{util.getTimeDiff(step.startDate, step.finishDate)}}</span>
+          <span *ngIf="step.status == 'ACTIVE'">{{step.step}}. Step started {{util.getTimeDiff(step.startDate)}} ago</span>
+          <span *ngIf="step.status != 'ACTIVE'">{{step.step}}. Step took {{util.getTimeDiff(step.startDate, step.finishDate)}}</span>
           <span>{{step.status}}</span>
         </div>
         <span class="small-font">Started on {{step.startDate | date:'HH:mm dd/MM'}}</span>
