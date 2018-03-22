@@ -40,6 +40,9 @@ export class PlanOneMarketPage {
 
   ionViewDidEnter() {
     this.loadOneMarket();
+    if(this.model.tickerUpdated < (new Date().getTime() - 20000)) {
+      this.refreshTicker();
+    }
   }
 
   showMenu(myEvent) {
