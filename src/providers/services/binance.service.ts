@@ -11,6 +11,7 @@ import {BinanceTrade} from "../domain/binanceTrade.model";
 import {OneMarketPlan} from "../domain/oneMarketPlan.model";
 import {AuditLog} from "../domain/auditLog.model";
 import {PlanStep} from "../domain/planStep.model";
+import {Strategy} from "../domain/strategy.model";
 
 @Injectable()
 export class BinanceService {
@@ -89,5 +90,17 @@ export class BinanceService {
 
   removeThreshold(planId: number, stepId: number): Observable<PlanStep> {
     return this.http.post<PlanStep>(this.path + "/plan/" + planId + "/step/" + stepId + "/removeThreshold", {});
+  }
+
+  getFirstStepStrategies(): Observable<Strategy[]> {
+    return this.http.get<Strategy[]>(this.path + "/config/firstmarket");
+  }
+
+  getFirstStepPriceStrategies(): Observable<Strategy[]> {
+    return this.http.get<Strategy[]>(this.path + "/config/firststepprice");
+  }
+
+  getNextStepStrategies(): Observable<Strategy[]> {
+    return this.http.get<Strategy[]>(this.path + "/config/nextmarket");
   }
 }

@@ -3,6 +3,7 @@ import {Ticker} from "../domain/ticker";
 import {User} from "../domain/user.model";
 import {BinanceBalance} from "../domain/binanceBalance.model";
 import {Plan} from "../domain/plan.model";
+import {Strategy} from "../domain/strategy.model";
 
 @Injectable()
 export class Model {
@@ -18,6 +19,10 @@ export class Model {
 
   public ticker: Ticker[];
   public tickerUpdated: number;
+
+  public firstStepStrategies: Strategy[];
+  public firstStepPriceStrategies: Strategy[];
+  public nextStepStrategies: Strategy[];
 
   public setBalances(balances: BinanceBalance[]) {
     this.binanceBalances = balances;

@@ -36,6 +36,7 @@ import {PlanOneMarketMenu, PlanOneMarketPage} from "../pages/plans/planOneMarket
 import {Util} from "../providers/services/util";
 import {EthFilter} from "../providers/pipes/eth.pipe";
 import {AuditLogsPopover} from "../pages/plans/auditLogs.popover";
+import {CreatePlanPage} from "../pages/createPlan/createPlan";
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import {AuditLogsPopover} from "../pages/plans/auditLogs.popover";
     CircleDetailsPage,
     CreateLoopPopover,
     CreateOneMarketPopover,
+    CreatePlanPage,
     DepthPage,
     HomePage,
     LoadingPage,
@@ -81,6 +83,7 @@ import {AuditLogsPopover} from "../pages/plans/auditLogs.popover";
     CircleDetailsPage,
     CreateLoopPopover,
     CreateOneMarketPopover,
+    CreatePlanPage,
     DepthPage,
     HomePage,
     LoadingPage,

@@ -30,6 +30,12 @@ export class LoadingPage {
       this.loadUser();
     } else if (!this.state.loadedTicker) {
       this.loadTicker();
+    } else if (!this.state.loadedFirstStepStrategies) {
+      this.loadFirstStepStrategies();
+    } else if (!this.state.loadedFirstStepPriceStrategies) {
+      this.loadFirstStepPriceStrategies();
+    } else if (!this.state.loadedNextStepStrategies) {
+      this.loadNextStepStrategies();
     } else {
       this.nav.setRoot(TabsPage);
     }
@@ -76,6 +82,30 @@ export class LoadingPage {
       this.state.loadedTicker = true;
       this.init();
     }, error => {console.log("got error when initially loading ticker")});
+  }
+
+  loadFirstStepStrategies() {
+    this.binance.getFirstStepStrategies().subscribe(data => {
+      this.model.firstStepStrategies = data;
+      this.state.loadedFirstStepStrategies = true;
+      this.init();
+    });
+  }
+
+  loadFirstStepPriceStrategies() {
+    this.binance.getFirstStepPriceStrategies().subscribe(data => {
+      this.model.firstStepPriceStrategies = data;
+      this.state.loadedFirstStepPriceStrategies = true;
+      this.init();
+    });
+  }
+
+  loadNextStepStrategies() {
+    this.binance.getNextStepStrategies().subscribe(data => {
+      this.model.nextStepStrategies = data;
+      this.state.loadedNextStepStrategies = true;
+      this.init();
+    });
   }
 
 }
