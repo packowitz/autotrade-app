@@ -193,38 +193,12 @@ export class CreatePlanPage {
 
   startPlan() {
     this.config.firstMarketStrategy = this.firstStepStrategy.name;
-    this.config.firstMarketStrategyParams = null;
-    if(this.firstStepStrategyParams) {
-      this.firstStepStrategyParams.forEach(s => {
-        if(this.config.firstMarketStrategyParams == null) {
-          this.config.firstMarketStrategyParams = s.value;
-        } else {
-          this.config.firstMarketStrategyParams += ";" + s.value;
-        }
-      });
-    }
+    this.config.firstMarketStrategyParams = this.paramsToConfig(this.firstStepStrategyParams);
     this.config.firstStepPriceStrategy = this.firstStepPriceStrategy.name;
-    this.config.firstStepPriceStrategyParams = null;
-    if(this.firstStepPriceStrategyParams) {
-      this.firstStepPriceStrategyParams.forEach(s => {
-        if(this.config.firstStepPriceStrategyParams == null) {
-          this.config.firstStepPriceStrategyParams = s.value;
-        } else {
-          this.config.firstStepPriceStrategyParams += ";" + s.value;
-        }
-      });
-    }
+    this.config.firstStepPriceStrategyParams = this.paramsToConfig(this.firstStepPriceStrategyParams);
     this.config.nextMarketStrategy = this.nextStepStrategy.name;
-    this.config.nextMarketStrategyParams = null;
-    if(this.nextStepStrategyParams) {
-      this.nextStepStrategyParams.forEach(s => {
-        if(this.config.nextMarketStrategyParams == null) {
-          this.config.nextMarketStrategyParams = s.value;
-        } else {
-          this.config.nextMarketStrategyParams += ";" + s.value;
-        }
-      });
-    }
+    this.config.nextMarketStrategyParams = this.paramsToConfig(this.nextStepStrategyParams);
+
     this.starting = true;
     this.binance.createPlan(this.config).subscribe(data => {
       this.model.binancePlans.unshift(data);
@@ -242,6 +216,24 @@ export class CreatePlanPage {
         buttons: [{text: 'OK'}]
       }).present();
     });
+  }
+
+  paramsToConfig(params: StrategyParam[]): string {
+    let configString: string = null;
+    if(params) {
+      params.forEach(s => {
+        let val: string = s.value;
+        if(s.type == 'percentage') {
+          val = (parseFloat(val) * 10 / 1000).toString();
+        }
+        if(configString == null) {
+          configString = val;
+        } else {
+          configString += ";" + val;
+        }
+      });
+    }
+    return configString;
   }
 
   goBinanceAccount() {
