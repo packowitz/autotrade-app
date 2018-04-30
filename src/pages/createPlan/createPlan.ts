@@ -7,6 +7,7 @@ import {BinanceAccountPage} from "../accounts/binanceAccount";
 import {AlertController, NavController, ToastController} from "ionic-angular";
 import {StrategyParam} from "../../providers/domain/strategyParam.model";
 import {BinanceBalance} from "../../providers/domain/binanceBalance.model";
+import {CreatePlanParams} from "../../providers/services/createPlanParams.service";
 
 @Component({
   templateUrl: 'createPlan.html'
@@ -29,8 +30,25 @@ export class CreatePlanPage {
               public nav: NavController,
               public binance: BinanceService,
               public alertCtrl: AlertController,
-              public toastCtrl: ToastController) {
+              public toastCtrl: ToastController,
+              public createPlanParams: CreatePlanParams) {
     this.resetPage();
+  }
+
+  ionViewDidEnter() {
+    this.binance.loadBalances();
+
+    if(this.createPlanParams.firstStepStrategy) {
+      this.firstStepStrategySelected(this.createPlanParams.firstStepStrategy);
+      this.createPlanParams.firstStepStrategy = null;
+      if(this.createPlanParams.firstStepStrategyParams) {
+        let paramSplit: string[] = this.createPlanParams.firstStepStrategyParams.split(";");
+        paramSplit.forEach((p, i) => {
+          this.firstStepStrategyParams[i].value = p;
+        });
+        this.createPlanParams.firstStepStrategyParams = null;
+      }
+    }
   }
 
   resetPage() {
@@ -42,10 +60,6 @@ export class CreatePlanPage {
     this.firstStepPriceStrategyParams = null;
     this.nextStepStrategy = null;
     this.nextStepStrategyParams = null;
-  }
-
-  ionViewDidEnter() {
-    this.binance.loadBalances();
   }
 
   refreshData() {
@@ -72,6 +86,7 @@ export class CreatePlanPage {
   }
 
   firstStepStrategySelected(strategyName) {
+    console.log("First step strategy selected: " + strategyName);
     this.firstStepStrategy = this.model.firstStepStrategies.find(s => s.name == strategyName);
     if(this.firstStepStrategy.params) {
       this.firstStepStrategyParams = [];

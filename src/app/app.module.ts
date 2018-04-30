@@ -28,16 +28,15 @@ import {UserService} from "../providers/services/user.service";
 import {JwtTokenInterceptor} from "../providers/interceptors/jwt_token.interceptor";
 import {BinanceAccountPage} from "../pages/accounts/binanceAccount";
 import {PlansPage} from "../pages/plans/plans.page";
-import {CreateLoopPopover} from "../pages/plans/createLoop.popover";
 import {PlanPathMenu, PlanPathPage} from "../pages/plans/planPath.page";
 import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
-import {CreateOneMarketPopover} from "../pages/depth/createOneMarket.popover";
 import {PlanOneMarketMenu, PlanOneMarketPage} from "../pages/plans/planOneMarket.page";
 import {Util} from "../providers/services/util";
 import {EthFilter} from "../providers/pipes/eth.pipe";
 import {AuditLogsPopover} from "../pages/plans/auditLogs.popover";
 import {CreatePlanPage} from "../pages/createPlan/createPlan";
 import {SymbolContainsFilter} from "../providers/pipes/symbolContains.filter";
+import {CreatePlanParams} from "../providers/services/createPlanParams.service";
 
 @NgModule({
   declarations: [
@@ -46,8 +45,6 @@ import {SymbolContainsFilter} from "../providers/pipes/symbolContains.filter";
     BinanceAccountPage,
     CirclePage,
     CircleDetailsPage,
-    CreateLoopPopover,
-    CreateOneMarketPopover,
     CreatePlanPage,
     DepthPage,
     HomePage,
@@ -83,8 +80,6 @@ import {SymbolContainsFilter} from "../providers/pipes/symbolContains.filter";
     BinanceAccountPage,
     CirclePage,
     CircleDetailsPage,
-    CreateLoopPopover,
-    CreateOneMarketPopover,
     CreatePlanPage,
     DepthPage,
     HomePage,
@@ -100,6 +95,7 @@ import {SymbolContainsFilter} from "../providers/pipes/symbolContains.filter";
   ],
   providers: [
     BinanceService,
+    CreatePlanParams,
     LoadingState,
     LocalStorage,
     Model,

@@ -6,10 +6,7 @@
 
 <ion-content padding>
   <ion-fab bottom right>
-    <button ion-fab><ion-icon name="add"></ion-icon></button>
-    <ion-fab-list side="top" color="danger">
-      <button ion-fab (click)="createLoop()"><ion-icon name="repeat"></ion-icon></button>
-    </ion-fab-list>
+    <button ion-fab (click)="goCreatePlan()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
   <ion-item no-lines *ngIf="!model.binanceAccount">
     <span class="small-font">You haven't set up a binance account yet. <span class="fake-link" (click)="goBinanceAccount()">Do it now</span></span>

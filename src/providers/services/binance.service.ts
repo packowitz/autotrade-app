@@ -63,30 +63,8 @@ export class BinanceService {
     return this.http.post<Plan>(this.path + "/plan", planConfig);
   }
 
-  createPath(startCur: string, startAmount, destCur: string, maxSteps, autoRestart: boolean): Observable<Plan> {
-    let body: any  = {
-      startCurrency: startCur,
-      startAmount: parseFloat(startAmount),
-      destCurrency: destCur,
-      maxSteps: parseInt(maxSteps),
-      autoRestart: autoRestart
-    };
-    return this.http.post<Plan>(this.path + "/plan/path", body);
-  }
-
   getPaths(planId: number): Observable<PathPlan[]> {
     return this.http.get<PathPlan[]>(this.path + "/plan/" + planId + "/paths");
-  }
-
-  createOneMarket(symbol: string, minProfit: number, startCurrency: string, startAmount: number, autoRestart: boolean): Observable<Plan> {
-    let body: any = {
-      symbol: symbol,
-      minProfit: minProfit,
-      startCurrency: startCurrency,
-      startAmount: startAmount,
-      autoRestart: autoRestart
-    };
-    return this.http.post<Plan>(this.path + "/plan/onemarket", body);
   }
 
   getOneMarket(planId: number): Observable<OneMarketPlan> {
