@@ -59,4 +59,8 @@ export class Model {
   public getTicker(symbol: string): Ticker {
     return this.ticker.find(t => t.symbol == symbol);
   }
+
+  public getAllSymbols(): string[] {
+    return this.ticker.map(t => t.symbol);
+  }
 }

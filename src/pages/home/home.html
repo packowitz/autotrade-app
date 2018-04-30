@@ -13,11 +13,11 @@
       <ion-item>
         <div class="flex-space-between">
           <span class="bold">Balances</span>
-          <ion-spinner name="circles" *ngIf="balancesLoading"></ion-spinner>
-          <ion-icon name="refresh" class="pointer" *ngIf="!balancesLoading" (click)="loadBalances()"></ion-icon>
+          <ion-spinner name="circles" *ngIf="binance.balancesLoading"></ion-spinner>
+          <ion-icon name="refresh" class="pointer" *ngIf="!binance.balancesLoading" (click)="loadBalances()"></ion-icon>
         </div>
       </ion-item>
-      <ion-item *ngIf="balancesLoadingFailed">Failed to load balances</ion-item>
+      <ion-item *ngIf="binance.balancesLoadingFailed">Failed to load balances</ion-item>
       <ion-item *ngFor="let bal of model.binanceBalances | sort:'totalInBtc-desc'">
         <div class="flex-vert small-font">
           <div class="flex-space-between">

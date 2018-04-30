@@ -37,6 +37,7 @@ import {Util} from "../providers/services/util";
 import {EthFilter} from "../providers/pipes/eth.pipe";
 import {AuditLogsPopover} from "../pages/plans/auditLogs.popover";
 import {CreatePlanPage} from "../pages/createPlan/createPlan";
+import {SymbolContainsFilter} from "../providers/pipes/symbolContains.filter";
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import {CreatePlanPage} from "../pages/createPlan/createPlan";
     BtcFilter,
     EthFilter,
     DoneStepFiter,
-    SortPipe
+    SortPipe,
+    SymbolContainsFilter
   ],
   imports: [
     BrowserModule,

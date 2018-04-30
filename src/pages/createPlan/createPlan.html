@@ -1,8 +1,99 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Create new plan</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="refreshData()" *ngIf="!refreshing"><ion-icon name="refresh"></ion-icon></button>
+      <ion-spinner name="crescent" *ngIf="refreshing"></ion-spinner>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+  <ion-item no-lines>
+    <div class="text-wrap">Create a new binance trading plan by choosing the amount and currency you'd like to trade and which strategies should be used.</div>
+    <ul>
+      <li class="text-wrap small-font">First step strategy defines the strategy to select your first market to trade in.</li>
+      <li class="text-wrap small-font">With the first price strategy you define on which indicators you'd like to have your price set.</li>
+      <li class="text-wrap small-font">The next step strategy is used to tell how you'd like to go on when the first step is done.</li>
+    </ul>
+  </ion-item>
+  <ion-item no-lines *ngIf="!model.binanceAccount"><span class="small-font">You haven't set up a binance account yet. <span class="fake-link" (click)="goBinanceAccount()">Do it now</span></span></ion-item>
+  <div *ngIf="model.binanceAccount">
+    <ion-item>
+      <div class="flex-space-between">
+        <span>Currency</span>
+        <select [(ngModel)]="config.startCurrency" class="input-border width-50">
+          <option value="" disabled selected>Start currency</option>
+          <option *ngFor="let bal of model.binanceBalances" [value]="bal.asset">{{bal.asset}}: {{bal.free | number: '1.0-8'}} free (${{bal.freeInUsdt | number: '1.0-2'}})</option>
+        </select>
+      </div>
+      <div class="flex-space-between margin-top-m">
+        <span>Amount</span>
+        <input type="number"[(ngModel)]="config.startAmount" class="input-border width-50">
+      </div>
+      <div class="flex-space-between margin-top-m">
+        <span>Restart plan automatically</span>
+        <input type="checkbox" [(ngModel)]="config.autoRestart">
+      </div>
+    </ion-item>
+    <ion-list-header no-lines>Strategies:</ion-list-header>
+    <ion-item>
+      <div class="flex-space-between">
+        <span>First step</span>
+        <select [ngModel]="firstStepStrategy?.name" (change)="firstStepStrategySelected($event.target.value)" class="input-border width-50">
+          <option value="" disabled selected>Strategy</option>
+          <option *ngFor="let strat of model.firstStepStrategies" [value]="strat.name">{{strat.name}}</option>
+        </select>
+      </div>
+      <div *ngIf="firstStepStrategy" class="margin-top-m small-font text-wrap">{{firstStepStrategy.description}}</div>
+      <div *ngIf="firstStepStrategyParams">
+        <div *ngFor="let param of firstStepStrategyParams" class="flex-space-between margin-top-m">
+          <span>{{param.label}}</span>
+          <select *ngIf="param.type == 'symbol'" [(ngModel)]="param.value" class="input-border width-50">
+            <option value="" disabled selected>Symbol</option>
+            <option *ngFor="let symbol of model.getAllSymbols() | symbolContains: config.startCurrency" [value]="symbol">{{symbol}}</option>
+          </select>
+        </div>
+      </div>
+    </ion-item>
+    <ion-item>
+      <div class="flex-space-between">
+        <span>First step price</span>
+        <select [ngModel]="firstStepPriceStrategy?.name" (change)="firstStepPriceStrategySelected($event.target.value)" class="input-border width-50">
+          <option value="" disabled selected>Strategy</option>
+          <option *ngFor="let strat of model.firstStepPriceStrategies" [value]="strat.name">{{strat.name}}</option>
+        </select>
+      </div>
+      <div *ngIf="firstStepPriceStrategy" class="margin-top-m small-font text-wrap">{{firstStepPriceStrategy.description}}</div>
+      <div *ngIf="firstStepPriceStrategyParams">
+        <div *ngFor="let param of firstStepPriceStrategyParams" class="flex-space-between margin-top-m">
+          <span>{{param.label}}</span>
+          <div *ngIf="param.type == 'percentage'" class="flex-space-between width-50">
+            <input type="number" [(ngModel)]="param.value" step="0.1" class="input-border flex-grow">&nbsp;%
+          </div>
+        </div>
+      </div>
+    </ion-item>
+    <ion-item>
+      <div class="flex-space-between">
+        <span>Next step</span>
+        <select [ngModel]="nextStepStrategy?.name" (change)="nextStepStrategySelected($event.target.value)" class="input-border width-50">
+          <option value="" disabled selected>Strategy</option>
+          <option *ngFor="let strat of model.nextStepStrategies" [value]="strat.name">{{strat.name}}</option>
+        </select>
+      </div>
+      <div *ngIf="nextStepStrategy" class="margin-top-m small-font text-wrap">{{nextStepStrategy.description}}</div>
+      <div *ngIf="nextStepStrategyParams">
+        <div *ngFor="let param of nextStepStrategyParams" class="flex-space-between margin-top-m">
+          <span>{{param.label}}</span>
+          <div *ngIf="param.type == 'percentage'" class="flex-space-between width-50">
+            <input type="number" [(ngModel)]="param.value" step="0.1" class="input-border flex-grow">&nbsp;%
+          </div>
+        </div>
+      </div>
+    </ion-item>
+    <div class="margin-top-m flex-center">
+      <button ion-button [disabled]="!isConfigComplete()" (click)="startPlan()">Start plan</button>
+    </div>
+  </div>
 </ion-content>

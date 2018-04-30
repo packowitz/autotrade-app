@@ -12,14 +12,35 @@ import {OneMarketPlan} from "../domain/oneMarketPlan.model";
 import {AuditLog} from "../domain/auditLog.model";
 import {PlanStep} from "../domain/planStep.model";
 import {Strategy} from "../domain/strategy.model";
+import {PlanConfig} from "../domain/planConfig.model";
 
 @Injectable()
 export class BinanceService {
 
   path: string;
 
+  public balancesLoading: boolean = false;
+  public balancesLoadingFailed: boolean = false;
+
   constructor(public model: Model, public http: HttpClient) {
     this.path = this.model.server + "/app/binance"
+  }
+
+  loadBalances() {
+    if(!this.model.binanceAccount) {
+      return;
+    }
+    this.balancesLoading = true;
+    this.balancesLoadingFailed = false;
+    this.getAccount().subscribe(
+      data => {
+        this.model.setBalances(data.balances);
+        this.balancesLoading = false;
+      }, error => {
+        this.balancesLoading = false;
+        this.balancesLoadingFailed = true;
+      }
+    );
   }
 
   getAllBookTickers(): Observable<Ticker[]> {
@@ -36,6 +57,10 @@ export class BinanceService {
 
   getAccount(): Observable<BinanceAccount> {
     return this.http.get<BinanceAccount>(this.path + "/account");
+  }
+
+  createPlan(planConfig: PlanConfig): Observable<Plan> {
+    return this.http.post<Plan>(this.path + "/plan", planConfig);
   }
 
   createPath(startCur: string, startAmount, destCur: string, maxSteps, autoRestart: boolean): Observable<Plan> {
