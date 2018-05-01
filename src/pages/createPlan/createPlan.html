@@ -53,6 +53,9 @@
             <option value="" disabled selected>Symbol</option>
             <option *ngFor="let symbol of model.getAllSymbols() | symbolContains: config.startCurrency" [value]="symbol">{{symbol}}</option>
           </select>
+          <div *ngIf="param.type == 'percentage'" class="flex-space-between width-50">
+            <input type="number" [(ngModel)]="param.value" step="0.1" class="input-border flex-grow">&nbsp;%
+          </div>
         </div>
       </div>
     </ion-item>
