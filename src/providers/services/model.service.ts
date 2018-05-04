@@ -7,8 +7,8 @@ import {Strategy} from "../domain/strategy.model";
 
 @Injectable()
 export class Model {
-  public server = "http://localhost:8080/trade";
-  //public server = "https://api.askthepeople.io/trade";
+  //public server = "http://localhost:8080/trade";
+  public server = "https://api.askthepeople.io/trade";
 
   public user: User;
   public binanceAccount: Account;
