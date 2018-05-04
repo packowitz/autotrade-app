@@ -28,7 +28,6 @@ import {UserService} from "../providers/services/user.service";
 import {JwtTokenInterceptor} from "../providers/interceptors/jwt_token.interceptor";
 import {BinanceAccountPage} from "../pages/accounts/binanceAccount";
 import {PlansPage} from "../pages/plans/plans.page";
-import {PlanPathMenu, PlanPathPage} from "../pages/plans/planPath.page";
 import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
 import {PlanOneMarketMenu, PlanOneMarketPage} from "../pages/plans/planOneMarket.page";
 import {Util} from "../providers/services/util";
@@ -50,8 +49,6 @@ import {CreatePlanParams} from "../providers/services/createPlanParams.service";
     HomePage,
     LoadingPage,
     LoginPage,
-    PlanPathMenu,
-    PlanPathPage,
     PlanOneMarketPage,
     PlanOneMarketMenu,
     PlansPage,
@@ -85,8 +82,6 @@ import {CreatePlanParams} from "../providers/services/createPlanParams.service";
     HomePage,
     LoadingPage,
     LoginPage,
-    PlanPathMenu,
-    PlanPathPage,
     PlanOneMarketPage,
     PlanOneMarketMenu,
     PlansPage,

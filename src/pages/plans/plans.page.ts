@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, PopoverController, Tabs} from 'ionic-angular';
 import {Model} from "../../providers/services/model.service";
 import {BinanceAccountPage} from "../accounts/binanceAccount";
 import {BinanceService} from "../../providers/services/binance.service";
 import {Plan} from "../../providers/domain/plan.model";
-import {PlanPathPage} from "./planPath.page";
 import {PlanOneMarketPage} from "./planOneMarket.page";
 import {Util} from "../../providers/services/util";
 
@@ -51,11 +50,7 @@ export class PlansPage {
   }
 
   goPlanDetails(plan: Plan) {
-    if(plan.type == 'PATH') {
-      this.nav.push(PlanPathPage, {plan: plan});
-    } else if(plan.type == 'ONEMARKET') {
-      this.nav.push(PlanOneMarketPage, {plan: plan});
-    }
+    this.nav.push(PlanOneMarketPage, {plan: plan});
   }
 
 }
