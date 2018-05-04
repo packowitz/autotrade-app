@@ -76,6 +76,9 @@ export class PlanOneMarketPage {
       data => {
         this.oneMarket = data;
         this.ticker = this.model.getTicker(this.oneMarket.steps[0].symbol);
+        if(!this.ticker) {
+          console.log("No ticker found for " + this.oneMarket.steps[0].symbol);
+        }
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -130,6 +133,9 @@ export class PlanOneMarketPage {
       this.model.ticker = data;
       this.model.tickerUpdated = new Date().getTime();
       this.ticker = this.model.getTicker(this.oneMarket.steps[0].symbol);
+      if(!this.ticker) {
+        console.log("No ticker found for " + this.oneMarket.steps[0].symbol);
+      }
       this.refreshingTicker = false;
     }, error => {this.refreshingTicker = false; console.log("got error refreshing ticker")});
   }
