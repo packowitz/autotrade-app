@@ -75,7 +75,7 @@ export class PlanOneMarketPage {
     this.binance.getOneMarket(this.plan.id).subscribe(
       data => {
         this.oneMarket = data;
-        this.ticker = this.model.getTicker(this.oneMarket.symbol);
+        this.ticker = this.model.getTicker(this.oneMarket.steps[0].symbol);
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -129,7 +129,7 @@ export class PlanOneMarketPage {
     this.binance.getAllBookTickers().subscribe(data => {
       this.model.ticker = data;
       this.model.tickerUpdated = new Date().getTime();
-      this.ticker = this.model.getTicker(this.oneMarket.symbol);
+      this.ticker = this.model.getTicker(this.oneMarket.steps[0].symbol);
       this.refreshingTicker = false;
     }, error => {this.refreshingTicker = false; console.log("got error refreshing ticker")});
   }
@@ -143,8 +143,8 @@ export class PlanOneMarketPage {
         <ion-icon name="refresh" class="pointer"></ion-icon>Refresh
       </button>
       <button ion-item (click)="toggleAutoRestart()" [disabled]="page.plan.status != 'ACTIVE'">
-        <ion-icon name="checkbox-outline" *ngIf="page.oneMarket.autoRestart"></ion-icon>
-        <ion-icon name="square-outline" *ngIf="!page.oneMarket.autoRestart"></ion-icon>
+        <ion-icon name="checkbox-outline" *ngIf="page.plan.config.autoRestart"></ion-icon>
+        <ion-icon name="square-outline" *ngIf="!page.plan.config.autoRestart"></ion-icon>
         Auto restart plan
       </button>
       <button ion-item (click)="cancelPlan()" [disabled]="page.plan.status != 'ACTIVE'">
@@ -173,10 +173,10 @@ export class PlanOneMarketMenu {
   }
 
   toggleAutoRestart() {
-    let autoRestart:boolean = !this.page.oneMarket.autoRestart;
+    let autoRestart:boolean = !this.page.plan.config.autoRestart;
     this.page.binance.setAutoRestart(this.page.plan.id, autoRestart).subscribe(
       data => {
-        this.page.oneMarket = data;
+        this.page.plan.config = data;
       }
     );
   }

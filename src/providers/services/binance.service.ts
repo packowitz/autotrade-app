@@ -71,8 +71,8 @@ export class BinanceService {
     return this.http.get<OneMarketPlan>(this.path + "/plan/" + planId + "/onemarket");
   }
 
-  setAutoRestart(planId: number, autoRestart: boolean): Observable<any> {
-    return this.http.put<any>(this.path + "/plan/" + planId + "/autorepeat/" + autoRestart, {});
+  setAutoRestart(planId: number, autoRestart: boolean): Observable<PlanConfig> {
+    return this.http.put<PlanConfig>(this.path + "/plan/" + planId + "/autorepeat/" + autoRestart, {});
   }
 
   getPlans(): Observable<Plan[]> {
