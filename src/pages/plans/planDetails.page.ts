@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
   AlertController, NavController, NavParams, PopoverController, ToastController,
   ViewController
@@ -8,23 +8,23 @@ import {BinanceService} from "../../providers/services/binance.service";
 import {Plan} from "../../providers/domain/plan.model";
 import {PathPlan} from "../../providers/domain/pathPlan.model";
 import {PlanStep} from "../../providers/domain/planStep.model";
-import {OneMarketPlan} from "../../providers/domain/oneMarketPlan.model";
 import {Util} from "../../providers/services/util";
 import {AuditLogsPopover} from "./auditLogs.popover";
 import {DepthPage} from "../depth/depth";
 import {Ticker} from "../../providers/domain/ticker";
 
 @Component({
-  templateUrl: 'planOneMarket.page.html'
+  templateUrl: 'planDetails.page.html'
 })
-export class PlanOneMarketPage {
+export class PlanDetailsPage {
 
   loading: boolean = false;
   loadingFailed: boolean = false;
   refreshingTicker: boolean = false;
+  checkPlanDate: Date;
 
   plan: Plan;
-  oneMarket: OneMarketPlan;
+  latestSymbol: string;
   ticker: Ticker;
 
   constructor(public model: Model,
@@ -39,14 +39,14 @@ export class PlanOneMarketPage {
   }
 
   ionViewDidEnter() {
-    this.loadOneMarket();
+    this.loadPlan();
     if(this.model.tickerUpdated < (new Date().getTime() - 20000)) {
       this.refreshTicker();
     }
   }
 
   showMenu(myEvent) {
-    let popover = this.popoverCtrl.create(PlanOneMarketMenu, {page: this});
+    let popover = this.popoverCtrl.create(PlanDetailsMenu, {page: this});
     popover.present({
       ev: myEvent
     });
@@ -66,18 +66,24 @@ export class PlanOneMarketPage {
     });
   }
 
-  loadOneMarket() {
+  loadPlan() {
     if(!this.model.binanceAccount) {
       return;
     }
     this.loading = true;
     this.loadingFailed = false;
-    this.binance.getOneMarket(this.plan.id).subscribe(
+    this.binance.getPlan(this.plan.id).subscribe(
       data => {
-        this.oneMarket = data;
-        this.ticker = this.model.getTicker(this.oneMarket.steps[0].symbol);
-        if(!this.ticker) {
-          console.log("No ticker found for " + this.oneMarket.steps[0].symbol);
+        this.plan = data;
+        this.checkPlanDate = new Date();
+        this.latestSymbol = this.plan.steps[0].symbol;
+        if(this.latestSymbol) {
+          this.ticker = this.model.getTicker(this.latestSymbol);
+          if(!this.ticker) {
+            console.log("No ticker found for " + this.latestSymbol);
+          }
+        } else {
+          this.ticker = null;
         }
         this.loading = false;
       }, error => {
@@ -94,15 +100,15 @@ export class PlanOneMarketPage {
   }
 
   gotoDepth() {
-    this.nav.push(DepthPage, {symbol: this.oneMarket.symbol});
+    this.nav.push(DepthPage, {symbol: this.latestSymbol});
   }
 
   approxLoss(): number {
     let x: number;
-    if(this.oneMarket.steps[0].side == 'BUY') {
-      x = this.oneMarket.steps[0].price / parseFloat(this.ticker.bidPrice);
+    if(this.plan.steps[0].side == 'BUY') {
+      x = this.plan.steps[0].price / parseFloat(this.ticker.bidPrice);
     } else {
-      x = parseFloat(this.ticker.askPrice) / this.oneMarket.steps[0].price;
+      x = parseFloat(this.ticker.askPrice) / this.plan.steps[0].price;
     }
     x = 100 * (x - 1);
     return Math.round(100 * x) / 100;
@@ -115,7 +121,7 @@ export class PlanOneMarketPage {
       buttons: [
         {text: 'Cancel'},
         {text: 'Okay', handler: () => {
-            this.binance.removeThreshold(this.plan.id, this.oneMarket.steps[0].id).subscribe(() => {
+            this.binance.removeThreshold(this.plan.id, this.plan.steps[0].id).subscribe(() => {
               this.toastCtrl.create({
                 message: 'Removed threshold from last step',
                 duration: 2000,
@@ -132,9 +138,11 @@ export class PlanOneMarketPage {
     this.binance.getAllBookTickers().subscribe(data => {
       this.model.ticker = data;
       this.model.tickerUpdated = new Date().getTime();
-      this.ticker = this.model.getTicker(this.oneMarket.steps[0].symbol);
-      if(!this.ticker) {
-        console.log("No ticker found for " + this.oneMarket.steps[0].symbol);
+      if(this.latestSymbol) {
+        this.ticker = this.model.getTicker(this.latestSymbol);
+        if(!this.ticker) {
+          console.log("No ticker found for " + this.latestSymbol);
+        }
       }
       this.refreshingTicker = false;
     }, error => {this.refreshingTicker = false; console.log("got error refreshing ticker")});
@@ -164,9 +172,9 @@ export class PlanOneMarketPage {
     </ion-list>
   `
 })
-export class PlanOneMarketMenu {
+export class PlanDetailsMenu {
 
-  page: PlanOneMarketPage;
+  page: PlanDetailsPage;
 
   constructor(public viewCtrl: ViewController,
               public navParams: NavParams) {
@@ -174,7 +182,7 @@ export class PlanOneMarketMenu {
   }
 
   refresh() {
-    this.page.loadOneMarket();
+    this.page.loadPlan();
     this.viewCtrl.dismiss();
   }
 

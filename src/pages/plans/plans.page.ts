@@ -4,7 +4,7 @@ import {Model} from "../../providers/services/model.service";
 import {BinanceAccountPage} from "../accounts/binanceAccount";
 import {BinanceService} from "../../providers/services/binance.service";
 import {Plan} from "../../providers/domain/plan.model";
-import {PlanOneMarketPage} from "./planOneMarket.page";
+import {PlanDetailsPage} from "./planDetails.page";
 import {Util} from "../../providers/services/util";
 
 @Component({
@@ -14,6 +14,7 @@ export class PlansPage {
 
   plansLoading: boolean = false;
   plansLoadingFailed: boolean = false;
+  plansCheckDate: Date;
 
   constructor(public model: Model,
               public nav: NavController,
@@ -41,6 +42,7 @@ export class PlansPage {
     this.binance.getPlans().subscribe(
       data => {
         this.model.binancePlans = data;
+        this.plansCheckDate = new Date();
         this.plansLoading = false;
       }, error => {
         this.plansLoading = false;
@@ -50,7 +52,7 @@ export class PlansPage {
   }
 
   goPlanDetails(plan: Plan) {
-    this.nav.push(PlanOneMarketPage, {plan: plan});
+    this.nav.push(PlanDetailsPage, {plan: plan});
   }
 
 }

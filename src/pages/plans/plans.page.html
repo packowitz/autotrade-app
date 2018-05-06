@@ -24,16 +24,18 @@
       <ion-item *ngFor="let plan of model.binancePlans" (click)="goPlanDetails(plan)">
         <div class="flex-vert pointer">
           <div class="flex-space-between pointer">
-            <span>#{{plan.id}} {{plan.type}}</span>
+            <span><span class="small-font color-grey">#{{plan.id}}</span> {{plan.config.startAmount}} {{plan.config.startCurrency}}</span>
             <span>{{plan.status}}</span>
           </div>
           <div class="small-font flex-space-between">
-            <span>Started {{util.getTimeDiff(plan.startDate)}} ago</span>
-            <span>{{plan.runsDone}} runs gained {{plan.balancePerc * 100 | number:'1.0-2'}}%</span>
+            <span *ngIf="plan.status == 'ACTIVE' || plan.status == 'PAUSED'">Started {{util.getTimeDiff(plan.startDate, plansCheckDate)}} ago</span>
+            <span *ngIf="plan.status == 'CANCELLED' || plan.status == 'FINISHED'">Ran {{util.getTimeDiff(plan.startDate, plan.finishDate)}}</span>
+            <span *ngIf="plan.runsDone > 0">{{plan.runsDone}} runs gained {{plan.balancePerc * 100 | number:'1.0-2'}}%</span>
+            <span *ngIf="plan.runsDone == 0">no finished runs</span>
           </div>
           <div class="small-font flex-space-between">
             <span>{{plan.description}}</span>
-            <span *ngIf="plan.status == 'ACTIVE' && plan.lastActionDate">{{util.getTimeDiff(plan.lastActionDate)}} idle</span>
+            <span *ngIf="plan.status == 'ACTIVE' || plan.status == 'PAUSED'">{{util.getTimeDiff(plan.lastActionDate, plansCheckDate)}} idle</span>
           </div>
         </div>
       </ion-item>

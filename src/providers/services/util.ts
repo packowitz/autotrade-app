@@ -3,9 +3,16 @@ import {Injectable} from "@angular/core";
 @Injectable()
 export class Util {
 
-  public getTimeDiff(dateFrom: string, dateTo?: string): string {
+  public getTimeDiff(dateFrom: string, dateTo?): string {
     let dateFromInMs: number = new Date(Date.parse(dateFrom)).getTime();
-    let dateToInMs: number = dateTo ? new Date(Date.parse(dateTo)).getTime() : new Date().getTime();
+    let dateToInMs: number;
+    if(dateTo instanceof Date) {
+      dateToInMs = dateTo.getTime();
+    } else if(typeof dateTo === "string") {
+      dateToInMs = new Date(Date.parse(dateTo)).getTime();
+    } else {
+      dateToInMs = new Date().getTime();
+    }
     let diffInSecs: number = Math.floor((dateToInMs - dateFromInMs) / 1000);
     if(diffInSecs < 60) {
       return diffInSecs + " secs";

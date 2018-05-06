@@ -1,4 +1,5 @@
 import {PlanConfig} from "./planConfig.model";
+import {PlanStep} from "./planStep.model";
 
 export class Plan {
   id: number;
@@ -12,4 +13,5 @@ export class Plan {
   balance: number;
   balancePerc: number;
   runsDone: number;
+  steps: PlanStep[];
 }
