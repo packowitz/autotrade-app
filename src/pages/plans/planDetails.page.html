@@ -10,6 +10,9 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-refresher (ionRefresh)="loadPlan($event)" pullMin="40" pullMax="80">
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
   <ion-item *ngIf="loadingFailed">Failed to load plan details</ion-item>
   <div *ngIf="!loadingFailed">
     <ion-item>

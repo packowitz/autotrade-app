@@ -8,6 +8,9 @@
   <ion-fab bottom right>
     <button ion-fab (click)="goCreatePlan()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
+  <ion-refresher (ionRefresh)="loadPlans($event)" pullMin="40" pullMax="80">
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
   <ion-item no-lines *ngIf="!model.binanceAccount">
     <span class="small-font">You haven't set up a binance account yet. <span class="fake-link" (click)="goBinanceAccount()">Do it now</span></span>
   </ion-item>

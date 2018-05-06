@@ -66,7 +66,7 @@ export class PlanDetailsPage {
     });
   }
 
-  loadPlan() {
+  loadPlan(refresher?) {
     if(!this.model.binanceAccount) {
       return;
     }
@@ -86,9 +86,15 @@ export class PlanDetailsPage {
           this.ticker = null;
         }
         this.loading = false;
+        if(refresher) {
+          refresher.complete();
+        }
       }, error => {
         this.loading = false;
         this.loadingFailed = true;
+        if(refresher) {
+          refresher.complete();
+        }
       }
     );
   }

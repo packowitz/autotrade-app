@@ -33,7 +33,7 @@ export class PlansPage {
     this.tabs.select(2);
   }
 
-  loadPlans() {
+  loadPlans(refresher?) {
     if(!this.model.binanceAccount) {
       return;
     }
@@ -44,9 +44,15 @@ export class PlansPage {
         this.model.binancePlans = data;
         this.plansCheckDate = new Date();
         this.plansLoading = false;
+        if(refresher) {
+          refresher.complete();
+        }
       }, error => {
         this.plansLoading = false;
         this.plansLoadingFailed = true;
+        if(refresher) {
+          refresher.complete();
+        }
       }
     );
   }
