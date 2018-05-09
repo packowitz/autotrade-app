@@ -27,7 +27,7 @@ import {LoginPage} from "../pages/login/login";
 import {UserService} from "../providers/services/user.service";
 import {JwtTokenInterceptor} from "../providers/interceptors/jwt_token.interceptor";
 import {BinanceAccountPage} from "../pages/accounts/binanceAccount";
-import {PlansPage} from "../pages/plans/plans.page";
+import {PlansMenu, PlansPage} from "../pages/plans/plans.page";
 import {DoneStepFiter} from "../providers/pipes/doneStepFiter";
 import {PlanDetailsMenu, PlanDetailsPage} from "../pages/plans/planDetails.page";
 import {Util} from "../providers/services/util";
@@ -52,6 +52,7 @@ import {CreatePlanParams} from "../providers/services/createPlanParams.service";
     PlanDetailsPage,
     PlanDetailsMenu,
     PlansPage,
+    PlansMenu,
     TabsPage,
     TickerPage,
 
@@ -85,6 +86,7 @@ import {CreatePlanParams} from "../providers/services/createPlanParams.service";
     PlanDetailsPage,
     PlanDetailsMenu,
     PlansPage,
+    PlansMenu,
     TabsPage,
     TickerPage
   ],

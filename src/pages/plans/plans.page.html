@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Your Binance Plans</ion-title>
+    <ion-title>
+      <div class="flex-space-between">
+        <span>Your Binance Plans</span>
+        <ion-icon name="more" (click)="showMenu($event)" class="pointer"></ion-icon>
+      </div>
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -18,13 +23,13 @@
     <ion-list>
       <ion-item>
         <div class="flex-space-between">
-          <span class="bold">Plans</span>
+          <span class="bold"><span *ngIf="activePlans >= 0">{{activePlans}} active </span>plans</span>
           <ion-spinner name="circles" *ngIf="plansLoading"></ion-spinner>
           <ion-icon name="refresh" class="pointer" *ngIf="!plansLoading" (click)="loadPlans()"></ion-icon>
         </div>
       </ion-item>
       <ion-item *ngIf="plansLoadingFailed">Failed to load plans</ion-item>
-      <ion-item *ngFor="let plan of model.binancePlans" (click)="goPlanDetails(plan)">
+      <ion-item *ngFor="let plan of model.binancePlans | sort:sort" (click)="goPlanDetails(plan)">
         <div class="flex-vert pointer">
           <div class="flex-space-between pointer">
             <span><span class="small-font color-grey">#{{plan.id}}</span> {{plan.config.startAmount}} {{plan.config.startCurrency}}</span>
