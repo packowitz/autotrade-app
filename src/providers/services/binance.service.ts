@@ -26,8 +26,11 @@ export class BinanceService {
     this.path = this.model.server + "/app/binance"
   }
 
-  loadBalances() {
+  loadBalances(refresher?) {
     if(!this.model.binanceAccount) {
+      if(refresher) {
+        refresher.complete();
+      }
       return;
     }
     this.balancesLoading = true;
@@ -36,9 +39,15 @@ export class BinanceService {
       data => {
         this.model.setBalances(data.balances);
         this.balancesLoading = false;
+        if(refresher) {
+          refresher.complete();
+        }
       }, error => {
         this.balancesLoading = false;
         this.balancesLoadingFailed = true;
+        if(refresher) {
+          refresher.complete();
+        }
       }
     );
   }

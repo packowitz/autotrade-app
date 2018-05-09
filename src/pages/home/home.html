@@ -5,6 +5,9 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-refresher (ionRefresh)="binance.loadBalances($event)" [enabled]="model.binanceAccount" pullMin="40" pullMax="80">
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
   <ion-item no-lines><span class="larger-font">Hi {{model.user.username}}!</span></ion-item>
   <ion-item no-lines *ngIf="!model.binanceAccount"><span class="small-font">You haven't set up a binance account yet. <span class="fake-link" (click)="goBinanceAccount()">Do it now</span></span></ion-item>
   <ion-item no-lines *ngIf="model.binanceAccount"><span class="small-font">Manage your binance keys <span class="fake-link" (click)="goBinanceAccount()">here</span>.</span></ion-item>
@@ -14,7 +17,7 @@
         <div class="flex-space-between">
           <span class="bold">Balances</span>
           <ion-spinner name="circles" *ngIf="binance.balancesLoading"></ion-spinner>
-          <ion-icon name="refresh" class="pointer" *ngIf="!binance.balancesLoading" (click)="loadBalances()"></ion-icon>
+          <ion-icon name="refresh" class="pointer" *ngIf="!binance.balancesLoading" (click)="binance.loadBalances()"></ion-icon>
         </div>
       </ion-item>
       <ion-item *ngIf="binance.balancesLoadingFailed">Failed to load balances</ion-item>
