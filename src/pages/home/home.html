@@ -10,7 +10,10 @@
   </ion-refresher>
   <ion-item no-lines><span class="larger-font">Hi {{model.user.username}}!</span></ion-item>
   <ion-item no-lines *ngIf="!model.binanceAccount"><span class="small-font">You haven't set up a binance account yet. <span class="fake-link" (click)="goBinanceAccount()">Do it now</span></span></ion-item>
-  <ion-item no-lines *ngIf="model.binanceAccount"><span class="small-font">Manage your binance keys <span class="fake-link" (click)="goBinanceAccount()">here</span>.</span></ion-item>
+  <ion-item no-lines *ngIf="model.binanceAccount">
+    <div class="small-font">Manage your binance keys <span class="fake-link" (click)="goBinanceAccount()">here</span>.</div>
+    <div class="small-font color-failure text-wrap" *ngIf="!model.binanceAccount.activated">Your binance account is not activated yet. Please write an email to <span class="bold">trade@pacworx.io</span> to get your account activated.</div>
+  </ion-item>
   <div *ngIf="model.binanceAccount">
     <ion-list>
       <ion-item>
